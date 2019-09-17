@@ -29,7 +29,7 @@ This GitHub repository will serve as a database for all software files associate
     <td>Android</td>
     <td>4,5,6,7,8,9</td>
     <td>Released 2013</td>
-    <td>Compatible with Android and newer versions (Requires Bluetooth 2.0 reciver)</td>
+    <td>Compatible with Android 4 and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
   <tr>
     <td>MacOS</td>
