@@ -21,21 +21,21 @@ This GitHub repository will serve as a database for all software files associate
   </tr>
   <tr>
     <td>Windows</td>
-    <td>XP,7,10</td>
-    <td>2001</td>
-    <td>Compatible with Windows XP and newer versions</td>
+    <td>7,10</td>
+    <td>2009</td>
+    <td>Compatible with Windows 7 and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
   <tr>
     <td>Android</td>
     <td>4,5,6,7,8,9</td>
     <td>Released 2013</td>
-    <td>Compatible with Android and newer versions (Requires USB On-The-Go)</td>
+    <td>Compatible with Android and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
   <tr>
     <td>MacOS</td>
     <td>10</td>
     <td>Released 2000</td>
-    <td>Compatible with Mac OS X 10.0 and newer versions</td>
+    <td>Compatible with Mac OS X 10.0 and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
   </table> 
 
