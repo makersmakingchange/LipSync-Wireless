@@ -1,6 +1,6 @@
 ## LipSync Wireless
 
-The "LipSync" is an assistive technology device which is being developed to allow quadriplegics and other people with limited hand use the ability to use touchscreen mobile devices by manipulation of a mouth-operated joystick with integrated sip and puff controls. We are releasing all of our work open-source, to make the Lipsync a solution that can be made at the community level for less than $300.
+The LipSync is an assistive technology device which is being developed to allow quadriplegics and other people with limited hand use the ability to use touchscreen mobile devices by manipulation of a mouth-operated joystick with integrated sip and puff controls. We are releasing all of our work open-source, to make the Lipsync a solution that can be made at the community level for less than $300.
 
 This GitHub repository will serve as a database for all software files associated with the LipSync Wireless.
 
@@ -17,17 +17,17 @@ This GitHub repository will serve as a database for all software files associate
     <td>iOS</td>
     <td>13.1</td>
     <td>September 19,2019</td>
-    <td>Compatible with iphone 7 and newer versions</td>
+    <td>Compatible with iPhone 7 and newer versions</td>
   </tr>
   <tr>
     <td>Windows</td>
-    <td>7,10</td>
+    <td>7-10</td>
     <td>2009</td>
-    <td>Compatible with Windows 7 and newer versions (Requires Bluetooth 2.0 reciver)</td>
+    <td>Compatible with Windows 7 and newer versions (Requires Bluetooth 2.0 reciever)</td>
   </tr>
   <tr>
     <td>Android</td>
-    <td>4,5,6,7,8,9</td>
+    <td>4+</td>
     <td>Released 2013</td>
     <td>Compatible with Android 4 and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
@@ -49,15 +49,21 @@ This GitHub repository will serve as a database for all software files associate
     <th>Link</th>
   <tr>
     <td>Manual</td>
-    <td>1.4.6.1</td>
+    <td>1.5</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Manual.pdf">LipSync_Manual.pdf</a></td>
   </tr>
   <tr>
-    <td>LipSync Wireless Setup Guide</td>
+    <td>LipSync Wireless Startup Guide</td>
     <td>1.0</td>
     <td>PDF</td>
-    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_Setup_Guide.pdf">LipSync_Wireless_Setup_Guide.pdf</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_Startup_Guide.pdf">LipSync_Wireless_Startup_Guide.pdf</a></td>
+  </tr>
+  <tr>
+    <td>LipSync Wireless User Guide</td>
+    <td>1.0</td>
+    <td>PDF</td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_User_Guide.pdf">LipSync_Wireless_User_Guide.pdf</a></td>
   </tr>
   <tr>
      <td>Mounting Document</td>
