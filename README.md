@@ -1,6 +1,6 @@
 ## LipSync Wireless
 
-The LipSync is an assistive technology device which is being developed to allow quadriplegics and other people with limited hand use the ability to use touchscreen mobile devices by manipulation of a mouth-operated joystick with integrated sip and puff controls. We are releasing all of our work open-source, to make the Lipsync a solution that can be made at the community level for less than $300.
+The LipSync is an assistive technology that enables people with quadriplega or limited hand to use touchscreen mobile devices by manipulating a mouth-operated joystick with integrated sip and puff controls. We are releasing all of our work open-source, to make the Lipsync a solution that can be made at the community level for less than $300.
 
 This GitHub repository will serve as a database for all software files associated with the LipSync Wireless.
 
@@ -136,7 +136,7 @@ For latest updates regarding the project we encourage you to visit our <a href="
 
 ## Contact Us
 
-For technical questions, to get involved or share your LipSync experience we encourage you to contact info@makersmakingchange.com
+For technical questions, to get involved, or share your LipSync experience we encourage you to visit [LipSync Wireless project page](https://www.makersmakingchange.com/project/lipsyncwireless/) or contact info@makersmakingchange.com
 
 
 
