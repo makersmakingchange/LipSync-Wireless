@@ -1018,10 +1018,10 @@ void writeSettings(String changeString) {
       delay(5);
     } 
      //Get cursor initialization values if received "IN,0:0" and perform cursor initialization if received "IN,1:1"
-     else if(changeChar[0]=='I' && changeChar[1]=='N' && changeChar[3]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+     else if(changeChar[0]=='I' && changeChar[1]=='N' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
       getCursorInitialization();
       delay(5);
-    } else if (changeChar[0]=='I' && changeChar[1]=='N' && changeChar[3]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+    } else if (changeChar[0]=='I' && changeChar[1]=='N' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
       setCursorInitialization(2,true);
       delay(5);
     } 
@@ -1046,21 +1046,21 @@ void writeSettings(String changeString) {
 	  delay(5);
     }
 	//Get bluetooth config value if received "BT,0:0" and set bluetooth config if received "BT,1:3"
-     else if(changeChar[0]=='B' && changeChar[1]=='T' && changeChar[3]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+     else if(changeChar[0]=='B' && changeChar[1]=='T' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
 		getBluetoothConfig(true);
 		delay(5);
-    } else if (changeChar[0]=='B' && changeChar[1]=='T' && changeChar[3]=='1' && changeChar[3]=='3' && changeString.length()==4) {
+    } else if (changeChar[0]=='B' && changeChar[1]=='T' && changeChar[2]=='1' && changeChar[3]=='3' && changeString.length()==4) {
 		setBluetoothConfig(true);
 		delay(5);
     } 
 	//Get communication value if received "CM,0:0", set communication mode to USB if received "CM,1:0" and set communication mode to Bluetooth if received "CM,1:1" 
-     else if(changeChar[0]=='C' && changeChar[1]=='M' && changeChar[3]=='0' && changeChar[3]=='0' && changeString.length()==4) {
+     else if(changeChar[0]=='C' && changeChar[1]=='M' && changeChar[2]=='0' && changeChar[3]=='0' && changeString.length()==4) {
 		commMode = getCommunicationMode(true);
 		delay(5);
-    } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[3]=='1' && changeChar[3]=='0' && changeString.length()==4) {
+    } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='0' && changeString.length()==4) {
 		setCommunicationMode(0, true);
 		delay(5);
-    } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[3]=='1' && changeChar[3]=='1' && changeString.length()==4) {
+    } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
 		setCommunicationMode(1, true);
 		delay(5);
     } 	
