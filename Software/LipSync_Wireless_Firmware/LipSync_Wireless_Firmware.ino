@@ -311,7 +311,7 @@ void loop() {
     Serial.print(yHigh);
     Serial.print(",");
     Serial.println(yLow); 
-    delay(50);
+    delay(150);
   }
 
   //Perform sip and puff actions raw mode is disabled 
@@ -914,7 +914,7 @@ void factoryReset(bool responseEnabled) {
     cursorDelay = cursorParams[cursorSpeedCounter]._delay;
     cursorFactor = cursorParams[cursorSpeedCounter]._factor;
     cursorMaxSpeed = cursorParams[cursorSpeedCounter]._maxSpeed;
-	cursorMaxBTSpeed = cursorParams[cursorSpeedCounter]._maxBTSpeed;
+	  cursorMaxBTSpeed = cursorParams[cursorSpeedCounter]._maxBTSpeed;
 
     delay(10);
 
@@ -1058,10 +1058,10 @@ void writeSettings(String changeString) {
 		commMode = getCommunicationMode(true);
 		delay(5);
     } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='0' && changeString.length()==4) {
-		setCommunicationMode(0, true);
+		commMode = setCommunicationMode(0, true);
 		delay(5);
     } else if (changeChar[0]=='C' && changeChar[1]=='M' && changeChar[2]=='1' && changeChar[3]=='1' && changeString.length()==4) {
-		setCommunicationMode(1, true);
+		commMode = setCommunicationMode(1, true);
 		delay(5);
     } 	
      //Perform factory reset if received "FR,0:0"
