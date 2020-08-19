@@ -21,7 +21,7 @@
 
 //Developed by : MakersMakingChange
 //Firmware : LipSync_Wireless_Firmware
-//VERSION: 1.1 (09 Aug 2020)
+//VERSION: 1.1 (18 Aug 2020)
 
 
 #include <EEPROM.h>
@@ -259,9 +259,9 @@ void loop() {
     delay(20); 
     //Perform cursor movment actions if joystick has been in active zone for 3 or more poll counts
     if(!skipChange && pollCounter >= 3) {
-	  //Check communication mode
+  	  //Check communication mode
       if (commMode == 0) {
-		if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
+		    if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
           //Serial.println("quad1");
           (rawModeEnabled)? sendRawData(xCursorHigh(xHigh),yCursorHigh(yHigh),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : Mouse.move(xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
@@ -282,8 +282,8 @@ void loop() {
           delay(cursorDelay);
           pollCounter = 0;
         }
-	  } else {
-		if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
+	    } else {
+		  if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {
           //Serial.println("quad1");
           (rawModeEnabled)? sendRawData(xCursorHigh(xHigh),yCursorHigh(yHigh),sipAndPuffRawHandler(),xHigh,xLow,yHigh,yLow) : sendBluetoothCommand(cursorClickStatus, xCursorHigh(xHigh), yCursorHigh(yHigh), 0);
           delay(cursorDelay);
@@ -304,7 +304,7 @@ void loop() {
           delay(cursorDelay);
           pollCounter = 0;
         }
-	  }
+	    }
     }   
   } 
   else if(rawModeEnabled) {
@@ -313,9 +313,7 @@ void loop() {
   }
 
   //Debug information 
-  
   if(debugModeEnabled) {
-    
     Serial.print("LOG:3:");
     Serial.print(xHigh);
     Serial.print(",");
@@ -383,7 +381,7 @@ int getCursorSpeed(bool responseEnabled) {
 
 //***INCREASE CURSOR SPEED LEVEL FUNCTION***//
 
-int increaseCursorSpeed(int speedCounter,bool responseEnabled) {
+int increaseCursorSpeed(int speedCounter,bool cmdResponseEnabled) {
   speedCounter++;
 
   if (speedCounter == 11) {
@@ -400,7 +398,7 @@ int increaseCursorSpeed(int speedCounter,bool responseEnabled) {
     EEPROM.put(2, speedCounter);
     delay(25);
   }
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
   Serial.print("SS,1:");
   Serial.println(speedCounter); 
   delay(5);
@@ -409,7 +407,7 @@ int increaseCursorSpeed(int speedCounter,bool responseEnabled) {
 
 //***DECREASE CURSOR SPEED LEVEL FUNCTION***//
 
-int decreaseCursorSpeed(int speedCounter,bool responseEnabled) {
+int decreaseCursorSpeed(int speedCounter,bool cmdResponseEnabled) {
   speedCounter--;
   if (speedCounter == -1) {
     ledBlink(6, 50, 3);
@@ -435,7 +433,7 @@ int decreaseCursorSpeed(int speedCounter,bool responseEnabled) {
     EEPROM.put(2, speedCounter);
     delay(25);
   }
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:"); 
   Serial.print("SS,1:");
   Serial.println(speedCounter);  
   delay(5);
@@ -705,7 +703,7 @@ void getCursorInitialization() {
 
 //***SET CURSOR INITIALIZATION FUNCTION***//
 
-void setCursorInitialization(int mode, bool responseEnabled) {
+void setCursorInitialization(int mode, bool cmdResponseEnabled) {
 
   ledOn(1);
 
@@ -745,7 +743,7 @@ void setCursorInitialization(int mode, bool responseEnabled) {
   EEPROM.get(18, xLowComp);
   delay(10);
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.print("IN,1:"); 
   Serial.print(xHighNeutral); 
   Serial.print(","); 
@@ -792,31 +790,31 @@ void getCursorCalibration(bool responseEnable) {
 
 //*** SET CURSOR CALIBRATION FUNCTION***//
 
-void setCursorCalibration(bool responseEnabled) {
+void setCursorCalibration(bool cmdResponseEnabled) {
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.println("CA,1:0");                                                   //Start the joystick calibration sequence 
   ledBlink(4, 300, 3);
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.println("CA,1:1"); 
   ledBlink(6, 500, 1);
   yHighMax = analogRead(Y_DIR_HIGH_PIN);
   ledBlink(1, 1000, 2);
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.println("CA,1:2"); 
   ledBlink(6, 500, 1);
   xHighMax = analogRead(X_DIR_HIGH_PIN);
   ledBlink(1, 1000, 2);
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.println("CA,1:3"); 
   ledBlink(6, 500, 1);
   yLowMax = analogRead(Y_DIR_LOW_PIN);
   ledBlink(1, 1000, 2);
 
-  (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+  (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.println("CA,1:4"); 
   ledBlink(6, 500, 1);
   xLowMax = analogRead(X_DIR_LOW_PIN);
@@ -833,12 +831,9 @@ void setCursorCalibration(bool responseEnabled) {
   EEPROM.put(28, yLowMax);
   delay(10);
 
-  getChangeTolerance(CHANGE_DEFAULT_TOLERANCE,false);
-  delay(10);
-
   ledBlink(5, 250, 3);
 
-   (responseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
+   (cmdResponseEnabled) ? Serial.print("SUCCESS:") : Serial.print("MANUAL:");
   Serial.print("CA,1:5:"); 
   Serial.print(xHighMax); 
   Serial.print(","); 
