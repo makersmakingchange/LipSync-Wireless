@@ -55,13 +55,13 @@ This GitHub repository will serve as a database for all software files associate
   </tr>
   <tr>
     <td>LipSync Wireless Startup Guide</td>
-    <td>1.1</td>
+    <td>1.2</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_Startup_Guide.pdf">LipSync_Wireless_Startup_Guide.pdf</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless User Guide</td>
-    <td>1.1</td>
+    <td>1.2</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_User_Guide.pdf">LipSync_Wireless_User_Guide.pdf</a></td>
   </tr>
