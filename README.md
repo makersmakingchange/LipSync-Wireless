@@ -23,19 +23,19 @@ This GitHub repository will serve as a database for all software files associate
     <td>Windows</td>
     <td>7-10</td>
     <td>2009</td>
-    <td>Compatible with Windows 7 and newer versions (Requires Bluetooth 2.0 reciever)</td>
+    <td>Compatible with Windows 7 and newer versions (Requires Bluetooth 2.0 receiver)</td>
   </tr>
   <tr>
     <td>Android</td>
     <td>4+</td>
     <td>Released 2013</td>
-    <td>Compatible with Android 4 and newer versions (Requires Bluetooth 2.0 reciver)</td>
+    <td>Compatible with Android 4 and newer versions (Requires Bluetooth 2.0 receiver)</td>
   </tr>
   <tr>
     <td>MacOS</td>
     <td>10</td>
     <td>Released 2000</td>
-    <td>Compatible with Mac OS X 10.0 and newer versions (Requires Bluetooth 2.0 reciver)</td>
+    <td>Compatible with Mac OS X 10.0 and newer versions (Requires Bluetooth 2.0 receiver)</td>
   </tr>
   </table> 
 
