@@ -3206,32 +3206,19 @@ void sipAndPuffHandler(const int mode)
 }
 
 ////***SIP AND PUFF RAW HANDLER FUNCTION***//
-// Returns a 0 if nothing detected, 1 if a puff is detected and a 2 if sip is deteced
+// Returns the raw pressure value
 // Function   : sipAndPuffRawValue
 //
-// Description: This function handles the sip and puff raw actions.
-//               Returns a 0 if nothing detected, 1 if a puff is detected and a 2 if sip is deteced
+// Description: This function outputs the raw pressure value from ADC
 //
 // Parameters :  void
 //
-// Return     : currentAction : byte : The return raw action value for sip and puff actions ( Neutral = 0, 1 = Puff, 2 = Sip)
-//*********************************//
-byte sipAndPuffRawValue()
+// Return     : currentAction : int : The return raw pressure value 
+int sipAndPuffRawValue()
 {
-  //byte currentAction = 0;
 
   g_cursorPressure = readPressure();  // Measure current pressure
-  /*
-  // Compare pressure value with puff pressure threshold
-  if (g_cursorPressure < g_puffThreshold) {
-    currentAction = 1;
-  }
 
-  // Compare pressure value with sip pressure threshold
-  if (g_cursorPressure > g_sipThreshold) {
-    currentAction = 2;
-  }
-  */
   return g_cursorPressure;
 }
 
