@@ -348,7 +348,8 @@ int g_commMode = 1;                                     // 0 == USB Communicatio
 void setup()
 {
   Serial.begin(115200);                                    // Initiate serial connection for debug and API control
-
+  Serial1.begin(115200);                                   //Setting baud rate for Bluetooth AT command 
+  
   initializePins();                                        // Initialize Arduino input and output pins
 
   Mouse.begin();                                           // Initialize the HID mouse functions
