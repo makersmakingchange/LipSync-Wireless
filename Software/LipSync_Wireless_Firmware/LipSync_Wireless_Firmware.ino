@@ -224,13 +224,15 @@ _functionList setChangeToleranceFunction =      {"CT,1", 1,  &setChangeTolerance
 _functionList getButtonMappingFunction =        {"MP,0", 0, &getButtonMapping};
 _functionList setButtonMappingFunction =        {"MP,1", 2, &setButtonMapping}; // 2 denotes an array parameter
 _functionList getScrollLevelFunction =          {"SL,0", 0, &getScrollLevel};
-_functionList setScrollLevelFunction =          {"SL,1", 1,  &setScrollLevel};
+_functionList setScrollLevelFunction =          {"SL,1", 1, &setScrollLevel};
+_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
+_functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
 _functionList getBluetoothConfigFunction =      {"BT,0", 0, &getBluetoothConfig};
 _functionList setBluetoothConfigFunction =      {"BT,1", 1, &setBluetoothConfig};
 _functionList factoryResetFunction =            {"FR,1", 1,  &factoryReset};
 
 // Declare array of API functions
-_functionList apiFunction[27] =
+_functionList apiFunction[29] =
 {
   getModelNumberFunction,
   getVersionNumberFunction,
@@ -256,6 +258,8 @@ _functionList apiFunction[27] =
   setButtonMappingFunction,
   getScrollLevelFunction,
   setScrollLevelFunction,
+  getCommunicationModeFunction,
+  setCommunicationModeFunction,
   getBluetoothConfigFunction,
   setBluetoothConfigFunction,
   factoryResetFunction
@@ -878,7 +882,7 @@ void setBluetoothSleepMode(void) {
 //                                        The serial printing is ignored if it's set to false.
 //               apiEnabled : bool : The API response is sent if it's set to true.
 //                                   Manual response is sent if it's set to false.
-// Return     : void
+// Return     : mode : The current communication mode.
 //****************************************//
 int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 	int mode =0;
@@ -896,6 +900,26 @@ int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
   return mode;
 }
 
+//***GET COMMUNICATION MODE STATUS FUNCTION***//
+// Function   : getCommunicationMode
+//
+// Description: This function is redefinition of main getCommunicationMode function to match the types of API function arguments.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//               optionalArray : int* : The array of int which should contain one element with value of zero.
+//
+// Return     : void
+void getCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
+{
+  if (optionalArray[0] == 0)
+  {
+    getCommunicationMode(responseEnabled, apiEnabled);
+  }
+}
+
 //***SET COMMUNICATION MODE STATUS FUNCTION***//
 // Function   : setCommunicationMode
 //
@@ -908,12 +932,36 @@ int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 //               mode : int : The communication method ( 0 = USB , 1 = Bluetooth )
 // Return     : void
 //****************************************//
-void setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode) {
+void setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode) 
+{
+  bool isValidMode = true;
+  if(mode == 0 || mode == 1){
+    g_commMode = mode;
+    delay(10);
+    isValidMode = true;
+  } else {
+    isValidMode = false;
+  }
 
-  g_commMode = mode;
-  printResponseSingle(responseEnabled, apiEnabled, true, 0, "CM,1", true, mode);
+  printResponseSingle(responseEnabled, apiEnabled, isValidMode, 0, "CM,1", true, mode);
 }
 
+//***SET COMMUNICATION MODE STATUS FUNCTION***//
+// Function   : setCommunicationMode
+//
+// Description: This function is redefinition of main setCommunicationMode function to match the types of API function arguments.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//               optionalArray : int* : The array of int which should contain one element with value of zero.
+//
+// Return     : void
+void setCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
+{
+  setCommunicationMode(responseEnabled, apiEnabled,optionalArray[0]);
+}
 
 //***GET BLUETOOTH CONFIGURATION STATUS FUNCTION***//
 // Function   : getBluetoothConfig
@@ -934,8 +982,8 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   EEPROM.get(EEPROM_configNumber, configNumber);
   delay(EEPROM_WRITE_DELAY);
   
-  if(configNumber!=3) {
-  	setBluetoothConfig(false,false);
+  if(configNumber!=BT_CONFIG_NUMBER) {
+  	setBluetoothConfig(false,false, BT_CONFIG_NUMBER);
   	delay(5);
   	configNumber=BT_CONFIG_NUMBER;
   }
@@ -972,15 +1020,22 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled, int* optionalArra
 //                                        The serial printing is ignored if it's set to false.
 //               apiEnabled : bool : The API response is sent if it's set to true.
 //                                   Manual response is sent if it's set to false.
+//               configNumber : const int : The configuration number value.
 //
 // Return     : void
-void setBluetoothConfig(bool responseEnabled, bool apiEnabled) {
-  setBluetoothCommandMode();                                //Call Bluetooth command mode function to enter command mode
-  setBluetoothConfigSequence();                             //Send configuarion data to Bluetooth module
-  delay(5);
-  EEPROM.put(EEPROM_configNumber, BT_CONFIG_NUMBER);
-  delay(EEPROM_WRITE_DELAY);
-  printResponseSingle(responseEnabled, apiEnabled, true, 0, "BT,1", true, BT_CONFIG_NUMBER);
+void setBluetoothConfig(bool responseEnabled, bool apiEnabled, int configNumber) {
+  bool isValidConfigNumber = true;
+  if(configNumber==BT_CONFIG_NUMBER) {
+    setBluetoothCommandMode();                                //Call Bluetooth command mode function to enter command mode
+    setBluetoothConfigSequence();                             //Send configuarion data to Bluetooth module
+    delay(5);
+    isValidConfigNumber = true;
+    EEPROM.put(EEPROM_configNumber, BT_CONFIG_NUMBER);
+    delay(EEPROM_WRITE_DELAY);
+  } else {
+    isValidConfigNumber = false;
+  }
+  printResponseSingle(responseEnabled, apiEnabled, isValidConfigNumber, 0, "BT,1", true, configNumber);
 }
 
 //***SET BLUETOOTH CONFIGURATION FUNCTION***//
@@ -997,10 +1052,7 @@ void setBluetoothConfig(bool responseEnabled, bool apiEnabled) {
 // Return     : void
 void setBluetoothConfig(bool responseEnabled, bool apiEnabled, int* optionalArray)
 {
-  if (optionalArray[0] == 3)
-  {
-    setBluetoothConfig(responseEnabled, apiEnabled);
-  }
+  setBluetoothConfig(responseEnabled, apiEnabled, optionalArray[0]);
 }
 
 //***GET MODEL NUMBER FUNCTION***//
@@ -2711,7 +2763,7 @@ void factoryReset(bool responseEnabled, bool apiEnabled, int resetType)
       setPuffThreshold(false, true, PUFF_PRESSURE_THRESHOLD_DEFAULT);       // Set default pressure threshold
       setSipThreshold(false, true, SIP_PRESSURE_THRESHOLD_DEFAULT);         // Set default pressure threshold
       setButtonMapping(false, true, BUTTON_MAPPING);                        // Set default action mapping
-      setBluetoothConfig(false, true);                                      // Set default bluetooth configuration 
+      setBluetoothConfig(false, true, BT_CONFIG_NUMBER);                    // Set default bluetooth configuration 
     }
     setCursorSpeed(false, true, SPEED_COUNTER);                             // Set default cursor speed counter
     setScrollLevel(false, true, SCROLL_LEVEL);                              // Set default scroll speed level
