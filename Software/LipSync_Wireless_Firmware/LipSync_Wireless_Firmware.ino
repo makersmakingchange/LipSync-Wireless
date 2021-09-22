@@ -40,9 +40,9 @@
   //An open-source mouth operated sip and puff joystick that enables people with limited hand function to emulate a mouse on their computer and/or smartphone.
 */
 
-//TITLE: LipSync_Firmware
+//TITLE: LipSync_Wireless_Firmware
 //AUTHOR: MakersMakingChange
-//VERSION: 3.0-beta (03 Jun 2021)
+//VERSION: 3.0-beta (21 Sep 2021)
 //Copyright Neil Squire Society 2016-2021.
 //LICENSE: This work is licensed under the CC BY SA 4.0 License: http://creativecommons.org/licenses/by-sa/4.0 .
 
@@ -392,6 +392,7 @@ void setup()
   ledBlink(4, 250, 3);                                     // End initialization visual feedback
 
   forceCursorDisplay();                                    // Display cursor on screen by moving it
+
 }
 
 
@@ -410,10 +411,10 @@ void setup()
 void loop()
 {
   g_settingsEnabled = serialSettings(g_settingsEnabled); // Check to see if setting option is enabled in Lipsync
-
+  
   cursorHandler();                                       // Read the joystick values and output mouse cursor movements.
 
-  sipAndPuffHandler(g_commMode);                                   // Pressure sensor sip and puff functions
+  sipAndPuffHandler(g_commMode);                         // Pressure sensor sip and puff functions
 
   pushButtonHandler();                                   // Check rear push buttons
 }
@@ -482,13 +483,13 @@ void cursorHandler(void)
   rotateCursor(xCursor, yCursor); 
 
   if (outputMouse && !scrollModeEnabled) 
-  { // Normal Mouse output
+  { // Normal Mouse output ( USB or Wireless )
     (g_commMode==0) ? moveCursor(xCursor, yCursor, 0) : moveBluetoothCursor(g_cursorClickStatus, xCursor, yCursor, 0); // Output mouse command
     delay(CURSOR_DELAY);
     g_pollCounter = 0; // Reset cursor poll counter
   }
-  else if (outputMouse && scrollModeEnabled) //Scroll 
-  { // Scroll mode
+  else if (outputMouse && scrollModeEnabled)
+  { // Scroll mode ( USB or Wireless )
     int yScroll = scrollModifier(yCursor, g_cursorMaxSpeed, g_cursorScrollLevel);
     (g_commMode==0) ? moveCursor(0, 0, yScroll) : moveBluetoothCursor(g_cursorClickStatus, 0, 0, yScroll);
     delay(g_cursorScrollDelay);
@@ -734,7 +735,17 @@ void forceCursorDisplay(void)
 }
 
 //***BLUETOOTH HID MOUSE COMMAND FUNCTION***//
-
+// Function   : moveBluetoothCursor
+//
+// Description: This function outputs bluetooth cursor action through Serial1.
+//
+// Parameters : buttonCursor : const int : button click action value.
+//              xCursor : const int : the input x cursor value.
+//              yCursor : const int : the input y cursor value.
+//              wheel   : const int : the input scroll wheel value.
+//
+// Return     : void
+//****************************************//
 void moveBluetoothCursor(const int buttonCursor,const int xCursor,const int yCursor,const int wheel) {
   byte bluetoothPacket[7];
 
@@ -753,7 +764,14 @@ void moveBluetoothCursor(const int buttonCursor,const int xCursor,const int yCur
 }
 
 //***BLUETOOTH HID MOUSE CLEAR FUNCTION***//
-
+// Function   : clearBluetoothCursor
+//
+// Description: This function outputs clear bluetooth cursor action through Serial1.
+//
+// Parameters : void
+//
+// Return     : void
+//****************************************//
 void clearBluetoothCursor(void) {
 
   byte bluetoothPacket[7];
@@ -773,7 +791,14 @@ void clearBluetoothCursor(void) {
 
 
 //***SET BLUETOOTH CMD MODE FUNCTION***//
-
+// Function   : setBluetoothCommandMode
+//
+// Description: This function sets/enters bluetooth command mode.
+//
+// Parameters : void
+//
+// Return     : void
+//****************************************//
 void setBluetoothCommandMode(void) {
   digitalWrite(TRANS_CONTROL_PIN, HIGH);            //Set the transistor base pin to HIGH to ensure Bluetooth module is off
   digitalWrite(PIO4_PIN, HIGH);                     //Set the command pin to high
@@ -796,8 +821,16 @@ void setBluetoothCommandMode(void) {
 }
 
 //***BLUETOOTH CONFIG FUNCTION***//
-
+// Function   : setBluetoothConfigSequence
+//
+// Description: This function performs bluetooth HID configuration sequence.
+//
+// Parameters : void
+//
+// Return     : void
+//****************************************//
 void setBluetoothConfigSequence(void) {
+
   Serial1.println("ST,255");                        //Turn off the 60 sec timer for command mode
   delay(15);
   Serial1.println("SA,2");                          //Set Authentication Value to 2
@@ -808,7 +841,7 @@ void setBluetoothConfigSequence(void) {
   delay(15);
   Serial1.println("SM,6");                          //Set the Pairing mode to auto-connect mode : "SM,6"
   delay(15);
-  Serial1.println("SH,0030");                       //Configure device as HID mouse and keyboard combo
+  Serial1.println("SH,0230");                       //Configure device as HID mouse and keyboard combo
   delay(15);
   Serial1.println("S~,6");                          //Activate HID profile
   delay(15);
@@ -822,7 +855,14 @@ void setBluetoothConfigSequence(void) {
 }
 
 //***SET BLUETOOTH SLEEP MODE FUNCTION***//
-
+// Function   : setBluetoothSleepMode
+//
+// Description: This function makes bluetooth module enter deep sleep mode.
+//
+// Parameters : void
+//
+// Return     : void
+//****************************************//
 void setBluetoothSleepMode(void) {
   setBluetoothCommandMode();                        //Enter BT command mode
   Serial1.println('Z');                             //Enter deep sleep mode (<2mA) when not connected
@@ -830,7 +870,16 @@ void setBluetoothSleepMode(void) {
 }
 
 //***GET COMMUNICATION MODE STATUS FUNCTION***//
-
+// Function   : getCommunicationMode
+//
+// Description: This function gets the LipSync current communication mode status.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+// Return     : void
+//****************************************//
 int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 	int mode =0;
   //Set communication mode based on physical pin status
@@ -848,17 +897,36 @@ int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 }
 
 //***SET COMMUNICATION MODE STATUS FUNCTION***//
+// Function   : setCommunicationMode
+//
+// Description: This function sets the LipSync current communication mode status.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//               mode : int : The communication method ( 0 = USB , 1 = Bluetooth )
+// Return     : void
+//****************************************//
+void setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode) {
 
-int setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode) {
-  
+  g_commMode = mode;
   printResponseSingle(responseEnabled, apiEnabled, true, 0, "CM,1", true, mode);
-
-  return mode;
 }
 
 
 //***GET BLUETOOTH CONFIGURATION STATUS FUNCTION***//
-
+// Function   : getBluetoothConfig
+//
+// Description: This function gets the LipSync current configuration number.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//
+// Return     : void
+//****************************************//
 void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
 
   int configNumber= BT_CONFIG_NUMBER;
@@ -866,7 +934,7 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   EEPROM.get(EEPROM_configNumber, configNumber);
   delay(EEPROM_WRITE_DELAY);
   
-  if(configNumber<0 || configNumber>3) {
+  if(configNumber!=3) {
   	setBluetoothConfig(false,false);
   	delay(5);
   	configNumber=BT_CONFIG_NUMBER;
@@ -875,6 +943,18 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   printResponseSingle(responseEnabled, apiEnabled, true, 0, "BT,0", true, configNumber);
 }
 
+//***GET BLUETOOTH CONFIGURATION STATUS FUNCTION***//
+// Function   : getBluetoothConfig
+//
+// Description: This function is redefinition of main getBluetoothConfig function to match the types of API function arguments.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//               optionalArray : int* : The array of int which should contain one element with value of zero.
+//
+// Return     : void
 void getBluetoothConfig(bool responseEnabled, bool apiEnabled, int* optionalArray)
 {
   if (optionalArray[0] == 0)
@@ -884,7 +964,16 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled, int* optionalArra
 }
 
 //***SET BLUETOOTH CONFIGURATION FUNCTION***//
-
+// Function   : setBluetoothConfig
+//
+// Description: This function sets the LipSync current configuration number and configure the bluetooth module.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//
+// Return     : void
 void setBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   setBluetoothCommandMode();                                //Call Bluetooth command mode function to enter command mode
   setBluetoothConfigSequence();                             //Send configuarion data to Bluetooth module
@@ -894,9 +983,21 @@ void setBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   printResponseSingle(responseEnabled, apiEnabled, true, 0, "BT,1", true, BT_CONFIG_NUMBER);
 }
 
+//***SET BLUETOOTH CONFIGURATION FUNCTION***//
+// Function   : setBluetoothConfig
+//
+// Description: This function is redefinition of main setBluetoothConfig function to match the types of API function arguments.
+//
+// Parameters :  responseEnabled : bool : The response for serial printing is enabled if it's set to true.
+//                                        The serial printing is ignored if it's set to false.
+//               apiEnabled : bool : The API response is sent if it's set to true.
+//                                   Manual response is sent if it's set to false.
+//               optionalArray : int* : The array of int which should contain one element with value of zero.
+//
+// Return     : void
 void setBluetoothConfig(bool responseEnabled, bool apiEnabled, int* optionalArray)
 {
-  if (optionalArray[0] == 1)
+  if (optionalArray[0] == 3)
   {
     setBluetoothConfig(responseEnabled, apiEnabled);
   }
