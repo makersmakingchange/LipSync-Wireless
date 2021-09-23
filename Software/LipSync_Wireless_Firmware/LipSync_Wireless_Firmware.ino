@@ -59,7 +59,7 @@
 #define OUTPUT_MIDDLE_CLICK       (int)5             // Generates a short middle click
 #define OUTPUT_CURSOR_HOME_RESET  (int)6             // Initiates the cursor home reset routine to reset center position. 
 #define OUTPUT_CURSOR_CALIBRATION (int)7             // Initiates the cursor calibration to calibrate joystick range and reset center position.
-//#define OUTPUT_SECONDARY_SCROLL   (int)8             // Initiates secondary scroll mode. This action is performed by press and holding mouse middle button.
+#define OUTPUT_SECONDARY_SCROLL   (int)8             // Initiates secondary scroll mode. This action is performed by press and holding mouse middle button.
 
 //***OUTPUT MAPPING***// - CUSTOMIZABLE
 //These values can be changed to remap different output actions to different input actions
@@ -225,14 +225,14 @@ _functionList getButtonMappingFunction =        {"MP,0", 0, &getButtonMapping};
 _functionList setButtonMappingFunction =        {"MP,1", 2, &setButtonMapping}; // 2 denotes an array parameter
 _functionList getScrollLevelFunction =          {"SL,0", 0, &getScrollLevel};
 _functionList setScrollLevelFunction =          {"SL,1", 1, &setScrollLevel};
-_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
+//_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
 _functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
 _functionList getBluetoothConfigFunction =      {"BT,0", 0, &getBluetoothConfig};
 _functionList setBluetoothConfigFunction =      {"BT,1", 1, &setBluetoothConfig};
 _functionList factoryResetFunction =            {"FR,1", 1,  &factoryReset};
 
 // Declare array of API functions
-_functionList apiFunction[29] =
+_functionList apiFunction[28] =
 {
   getModelNumberFunction,
   getVersionNumberFunction,
@@ -258,7 +258,7 @@ _functionList apiFunction[29] =
   setButtonMappingFunction,
   getScrollLevelFunction,
   setScrollLevelFunction,
-  getCommunicationModeFunction,
+  //getCommunicationModeFunction,
   setCommunicationModeFunction,
   getBluetoothConfigFunction,
   setBluetoothConfigFunction,
@@ -912,6 +912,7 @@ int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 //               optionalArray : int* : The array of int which should contain one element with value of zero.
 //
 // Return     : void
+/*
 void getCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
 {
   if (optionalArray[0] == 0)
@@ -919,6 +920,7 @@ void getCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArr
     getCommunicationMode(responseEnabled, apiEnabled);
   }
 }
+*/
 
 //***SET COMMUNICATION MODE STATUS FUNCTION***//
 // Function   : setCommunicationMode
@@ -2354,7 +2356,7 @@ void getButtonMapping(bool responseEnabled, bool apiEnabled)
     { // Check if it's a valid mapping
       int buttonMapping;
       EEPROM.get(EEPROM_buttonMapping1 + i * 2, buttonMapping);
-      if (buttonMapping < 0 || buttonMapping > 7)
+      if (buttonMapping < 0 || buttonMapping > 8)
       {
         isValidMapping = false;
         break;
@@ -2419,7 +2421,7 @@ void setButtonMapping(bool responseEnabled, bool apiEnabled, int inputButtonMapp
   bool isValidMapping = true;
   for (byte i = 0; i < INPUT_ACTION_COUNT; i++)
   { // Check each action for validity
-    if (inputButtonMapping[i] < 0 || inputButtonMapping[i] > 7) // Up to 7 input actions but 6 available
+    if (inputButtonMapping[i] < 0 || inputButtonMapping[i] > 8) // Up to 7 input actions but 6 available
     {
       isValidMapping = false;
       break;
@@ -3487,7 +3489,7 @@ void performButtonAction(byte outputAction, bool modeAction)
           delay(5);
           break;
         }
-      /*
+      
       case OUTPUT_SECONDARY_SCROLL:
         {
           // Scroll: Perform mouse scroll action using mouse middle button
@@ -3496,7 +3498,7 @@ void performButtonAction(byte outputAction, bool modeAction)
           delay(5);
           break;
         }
-        */
+        
     }// end switch
   }
 }
@@ -3663,7 +3665,6 @@ void cursorScroll(void)
 //
 // Return     : void
 //****************************************//
-/*
 void cursorSecondaryScroll(int mode)
 {
   if (mode == 0) {
@@ -3681,11 +3682,10 @@ void cursorSecondaryScroll(int mode)
   else {
     if (g_cursorClickStatus == 0) {
       //ledOn(2);
-      g_cursorClickStatus = 3;
-    } else if (g_cursorClickStatus == 3) {
+      g_cursorClickStatus = 5;
+    } else if (g_cursorClickStatus == 5) {
       ledClear();
       g_cursorClickStatus = 0;
     }    
   }
 }
-*/
