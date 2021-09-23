@@ -421,6 +421,7 @@ void loop()
   sipAndPuffHandler(g_commMode);                         // Pressure sensor sip and puff functions
 
   pushButtonHandler();                                   // Check rear push buttons
+
 }
 
 
@@ -980,14 +981,25 @@ void setCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArr
 void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
 
   int configNumber= BT_CONFIG_NUMBER;
-  
+
+
   EEPROM.get(EEPROM_configNumber, configNumber);
   delay(EEPROM_WRITE_DELAY);
+
+  //Is module already configured?
+  Serial1.print("$$$");                                   
+  delay(50);   
+  Serial1.println("O");
+  delay(5);
+  String configString = Serial1.readString();
+  delay(5);
+  Serial1.println("---");
+  delay(5);
   
-  if(configNumber!=BT_CONFIG_NUMBER) {
-  	setBluetoothConfig(false,false, BT_CONFIG_NUMBER);
-  	delay(5);
-  	configNumber=BT_CONFIG_NUMBER;
+  if (!(configString.indexOf("LipSyncMouse") >=0) || configNumber!=BT_CONFIG_NUMBER){
+    setBluetoothConfig(false,false, BT_CONFIG_NUMBER);
+    delay(5);
+    configNumber=BT_CONFIG_NUMBER;
   }
 
   printResponseSingle(responseEnabled, apiEnabled, true, 0, "BT,0", true, configNumber);
