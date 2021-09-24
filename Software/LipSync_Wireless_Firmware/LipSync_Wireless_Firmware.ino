@@ -396,7 +396,6 @@ void setup()
   ledBlink(4, 250, 3);                                     // End initialization visual feedback
 
   forceCursorDisplay();                                    // Display cursor on screen by moving it
-
 }
 
 
@@ -576,10 +575,10 @@ bool readJoystick(int &xCursor, int &yCursor, int &xHigh, int &xLow, int &yHigh,
     }
 
     g_pollCounter++;      // Add to the poll counter
-    // delay(20);
+    //delay(20);
 
     // If joystick is moved outside of deadband, calculate and update cursor movement.
-    if (!skipChange)
+    if(!skipChange && g_pollCounter >= 3) 
     {
       outputMouse = true;
       if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow))
