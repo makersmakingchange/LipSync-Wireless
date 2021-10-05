@@ -76,7 +76,8 @@
 //#define ACTION_SHORT_SIP    OUTPUT_LEFT_CLICK
 
 #define BT_CONFIG_FLAG false                     //Configure bluetooth ( Configure = true and Not Configure = false ). This is used to reset bluetooth module
-#define BT_CONFIG_NUMBER (byte)3						     //Bluetooth Config number for LipSync Wireless
+#define BT_CONFIG_NUMBER (byte)3                 //Bluetooth Config number for LipSync Wireless
+
 //***CUSTOMIZABLE VARIABLES***//
 #define ROTATION_ANGLE 0                          // CCW Rotation angle between Screen "up" to LipSync "up" {0,90,180,270} [degrees]
 
@@ -101,6 +102,8 @@
 #define SERIAL_DELAY (byte)5                      // The delay after a serial write [ms]
 #define EEPROM_WRITE_DELAY (byte)10               // The delay after an EEPROM write [ms]
 #define PRESSURE_HANDLER_DELAY (byte)5            // The delay added between pressure read cycles [ms] 
+
+#define BT_POLL_DELAY 75                          // The delay after each bluetooth data packets sent
 
 //*** DRIFT REDUCTIONS ***// CHANGE WITH CAUTION
 #define CURSOR_DEADBAND 30                        // Joystick deadband {ADC steps]
@@ -226,13 +229,13 @@ _functionList setButtonMappingFunction =        {"MP,1", 2, &setButtonMapping}; 
 _functionList getScrollLevelFunction =          {"SL,0", 0, &getScrollLevel};
 _functionList setScrollLevelFunction =          {"SL,1", 1, &setScrollLevel};
 //_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
-_functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
+//_functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
 _functionList getBluetoothConfigFunction =      {"BT,0", 0, &getBluetoothConfig};
 _functionList setBluetoothConfigFunction =      {"BT,1", 1, &setBluetoothConfig};
 _functionList factoryResetFunction =            {"FR,1", 1,  &factoryReset};
 
 // Declare array of API functions
-_functionList apiFunction[28] =
+_functionList apiFunction[27] =
 {
   getModelNumberFunction,
   getVersionNumberFunction,
@@ -259,7 +262,7 @@ _functionList apiFunction[28] =
   getScrollLevelFunction,
   setScrollLevelFunction,
   //getCommunicationModeFunction,
-  setCommunicationModeFunction,
+  //setCommunicationModeFunction,
   getBluetoothConfigFunction,
   setBluetoothConfigFunction,
   factoryResetFunction
@@ -373,7 +376,7 @@ void setup()
   getPuffThreshold(false, false);                          // Get the pressure sensor threshold boundaries
 
   g_commMode = getCommunicationMode(false,false);          //Identify the communication mode ( Bluetooth or USB )
- 
+
   getBluetoothConfig(false,false);                         //Get bluetooth configure number and reconfigure if it is needed
 
 
@@ -396,6 +399,7 @@ void setup()
   ledBlink(4, 250, 3);                                     // End initialization visual feedback
 
   forceCursorDisplay();                                    // Display cursor on screen by moving it
+  
 }
 
 
@@ -413,13 +417,14 @@ void setup()
 //*********************************//
 void loop()
 {
+  
   g_settingsEnabled = serialSettings(g_settingsEnabled); // Check to see if setting option is enabled in Lipsync
   
   cursorHandler();                                       // Read the joystick values and output mouse cursor movements.
 
   sipAndPuffHandler(g_commMode);                         // Pressure sensor sip and puff functions
-
-  pushButtonHandler();                                   // Check rear push buttons
+  delay(5);
+  pushButtonHandler(BUTTON_UP_PIN,BUTTON_DOWN_PIN);      // Check rear push buttons
 
 }
 
@@ -764,7 +769,7 @@ void moveBluetoothCursor(const int buttonCursor,const int xCursor,const int yCur
   Serial1.write(bluetoothPacket, 7);
   Serial1.flush();
 
-  delay(10);
+  delay(BT_POLL_DELAY);
 }
 
 //***BLUETOOTH HID MOUSE CLEAR FUNCTION***//
@@ -790,7 +795,7 @@ void clearBluetoothCursor(void) {
 
   Serial1.write(bluetoothPacket, 7);
   Serial1.flush();
-  delay(10);
+  delay(BT_POLL_DELAY);
 }
 
 
@@ -885,7 +890,7 @@ void setBluetoothSleepMode(void) {
 // Return     : mode : The current communication mode.
 //****************************************//
 int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
-	int mode =0;
+  int mode =0;
   //Set communication mode based on physical pin status
   if (digitalRead(MODE_SELECT_PIN) == LOW) {
     mode = 0;                                   //Mode 0 is USB communication mode
@@ -960,10 +965,12 @@ void setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode)
 //               optionalArray : int* : The array of int which should contain one element with value of zero.
 //
 // Return     : void
+/*
 void setCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
 {
   setCommunicationMode(responseEnabled, apiEnabled,optionalArray[0]);
 }
+*/
 
 //***GET BLUETOOTH CONFIGURATION STATUS FUNCTION***//
 // Function   : getBluetoothConfig
@@ -984,7 +991,7 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
 
   EEPROM.get(EEPROM_configNumber, configNumber);
   delay(EEPROM_WRITE_DELAY);
-
+  /*
   //Is module already configured?
   Serial1.print("$$$");                                   
   delay(50);   
@@ -994,8 +1001,10 @@ void getBluetoothConfig(bool responseEnabled, bool apiEnabled) {
   delay(5);
   Serial1.println("---");
   delay(5);
-  
+
   if (!(configString.indexOf("LipSyncMouse") >=0) || configNumber!=BT_CONFIG_NUMBER){
+  */
+  if (configNumber!=BT_CONFIG_NUMBER){
     setBluetoothConfig(false,false, BT_CONFIG_NUMBER);
     delay(5);
     configNumber=BT_CONFIG_NUMBER;
@@ -3244,44 +3253,36 @@ void ledBlink(int numBlinks, int delayBlinks, int ledNumber)
 }
 
 //***PUSH BUTTON SPEED HANDLER FUNCTION***//
-// Function   : pushButtonHandler
-//
-// Description: This function handles the push button actions. Pressed individually, these change cursor speed and 
-//              pressed together they initiate the joystick calibration.
-//
-// Parameters :  void 
-//
+// Function   : pushButtonHandler 
+// 
+// Description: This function handles the push button actions.
+// 
+// Parameters :  switchUpPin : int : The state of switch up pin.
+//               switchDownPin : int : The state of switch down pin.
+// 
 // Return     : void
 //*********************************//
-void pushButtonHandler()
-{ 
-  if (digitalRead(BUTTON_UP_PIN) == LOW)
-  { // Up button pushed
+void pushButtonHandler(int switchUpPin, int switchDownPin) {
+    //Cursor speed control push button functions below
+  if (digitalRead(switchUpPin) == LOW) {
     delay(200);
     clearButtonAction();
     delay(50);
-    if (digitalRead(BUTTON_DOWN_PIN) == LOW)
-    { // Up and down button pushed
-      setCursorCalibration(true, false);                      // Call joystick calibration if both push button up and down are pressed
-    }
-    else
-    { // Just up button pushed
-      increaseCursorSpeed(true, false);                      // Call increase cursor speed function if push button up is pressed
+    if (digitalRead(switchDownPin) == LOW) {
+      setCursorCalibration(true, false);                      //Call joystick calibration if both push button up and down are pressed 
+    } else {
+      increaseCursorSpeed(true, false);                      //Call increase cursor speed function if push button up is pressed 
     }
   }
 
-  if (digitalRead(BUTTON_DOWN_PIN) == LOW)
-  { // Down button pushed
+  if (digitalRead(switchDownPin) == LOW) {
     delay(200);
     clearButtonAction();
     delay(50);
-    if (digitalRead(BUTTON_UP_PIN) == LOW)
-    { // Down button and up button pushed
-      setCursorCalibration(true, false);                      // Call joystick calibration if both push button up and down are pressed
-    }
-    else
-    { // Just down button pushed
-      decreaseCursorSpeed(true, false);                      // Call increase cursor speed function if push button up is pressed
+    if (digitalRead(switchUpPin) == LOW) {
+      setCursorCalibration(true, false);                      //Call joystick calibration if both push button up and down are pressed 
+    } else {
+      decreaseCursorSpeed(true, false);                      //Call increase cursor speed function if push button up is pressed 
     }
   }
 }
@@ -3538,10 +3539,10 @@ void cursorLeftClick(int mode)
     }
   }
   else {
-		g_cursorClickStatus = 1;                   //Click status 1 is used for left click action 
-		moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    g_cursorClickStatus = 1;                   //Click status 1 is used for left click action 
+    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
     g_cursorClickStatus = 0;
-		clearBluetoothCursor();
+    clearBluetoothCursor();
   }
 }
 
@@ -3569,10 +3570,10 @@ void cursorMiddleClick(int mode)
     }
   }
   else {
-		g_cursorClickStatus = 5;                     //Click status 2 is used for right click action 
-		moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
-		g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
-		clearBluetoothCursor();   
+    g_cursorClickStatus = 5;                     //Click status 2 is used for right click action 
+    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
+    clearBluetoothCursor();   
   }
 }
 
@@ -3600,10 +3601,10 @@ void cursorRightClick(int mode)
     }
   }
   else {
-		g_cursorClickStatus = 2;                     //Click status 2 is used for right click action 
-		moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
-		g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
-		clearBluetoothCursor(); 
+    g_cursorClickStatus = 2;                     //Click status 2 is used for right click action 
+    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
+    clearBluetoothCursor(); 
   }
 }
 
