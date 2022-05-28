@@ -42,8 +42,8 @@
 
 //TITLE: LipSync_Wireless_Firmware
 //AUTHOR: MakersMakingChange
-//VERSION: 3.0-beta (21 Sep 2021)
-//Copyright Neil Squire Society 2016-2021.
+//VERSION: 3.0-beta (27 May 2022)
+//Copyright Neil Squire Society 2016-2022.
 //LICENSE: This work is licensed under the CC BY SA 4.0 License: http://creativecommons.org/licenses/by-sa/4.0 .
 
 #include <EEPROM.h>
@@ -324,7 +324,7 @@ int g_xLowMax;                                         // Set during calibration
 int g_yHighMax;
 int g_yLowMax;
 
-const float g_deadband_squared = CURSOR_DEADBAND * CURSOR_DEADBAND; // Squared deadband distance from center
+float g_xHighYHighRadius, g_xHighYLowRadius, g_xLowYLowRadius, g_xLowYHighRadius; // Squared deadband distance from center
 
 int g_changeTolerance;                                 // The tolerance of changes in FSRs readings
 
@@ -540,7 +540,7 @@ bool readJoystick(int &xCursor, int &yCursor, int &xHigh, int &xLow, int &yHigh,
   yLow  = analogRead(Y_DIR_LOW_PIN);
 
   // Check the FSR changes from previous reading and set the skip flag to true if the changes are below the change tolerance range
-  bool skipChange =   abs(xHigh - g_xHighPrev) < g_changeTolerance
+  bool aboveDelta =   abs(xHigh - g_xHighPrev) < g_changeTolerance
                    && abs(xLow  - g_xLowPrev)  < g_changeTolerance
                    && abs(yHigh - g_yHighPrev) < g_changeTolerance
                    && abs(yLow  - g_yLowPrev)  < g_changeTolerance;
@@ -563,51 +563,57 @@ bool readJoystick(int &xCursor, int &yCursor, int &xHigh, int &xLow, int &yHigh,
   float xLowYLow   =  sq(((xLow  - g_xLowNeutral)  > 0) ? float((xLow  - g_xLowNeutral))  : 0)
                     + sq(((yLow  - g_yLowNeutral)  > 0) ? float((yLow  - g_yLowNeutral))  : 0);
 
-  // Check to see if the joystick has moved outside the deadband
-  if ((xHighYHigh > g_deadband_squared) 
-   || (xHighYLow  > g_deadband_squared) 
-   || (xLowYLow   > g_deadband_squared) 
-   || (xLowYHigh  > g_deadband_squared))
+// Test if radial position is outside circular deadband
+  bool outsideDeadzone = (xHighYHigh > g_xHighYHighRadius) 
+                      || (xHighYLow  > g_xHighYLowRadius)
+                      || (xLowYLow   > g_xLowYLowRadius)
+                      || (xLowYHigh  > g_xLowYHighRadius);
+
+  // If joystick is moved, opposite FSR will decrease in force and therefore decrease in voltate
+  // (e.g. joystick unloaded->high resistance-> low voltage)
+  bool joystickLifted = (xHigh < CURSOR_LIFT_THRESOLD)
+                      || (xLow  < CURSOR_LIFT_THRESOLD) 
+                      || (yHigh < CURSOR_LIFT_THRESOLD) 
+                    || (yLow  < CURSOR_LIFT_THRESOLD);
+
+  //Check to see if the joystick has moved outside the deadband
+  if( outsideDeadzone && (aboveDelta || joystickLifted) )
   {
-
-    // Secondary check to see if joystick has moved by looking for low FSR values
-    // (e.g. joystick unloaded-> less force -> higher resistance -> lower voltage)
-    if ( (xHigh < CURSOR_LIFT_THRESOLD)
-      || (xLow  < CURSOR_LIFT_THRESOLD)
-      || (yHigh < CURSOR_LIFT_THRESOLD) 
-      || (yLow  < CURSOR_LIFT_THRESOLD)) {
-      skipChange = false; // Don't skip if joystick if moved and held
-    }
-
-    g_pollCounter++;      // Add to the poll counter
-    //delay(20);
-
-    // If joystick is moved outside of deadband, calculate and update cursor movement.
-    if(!skipChange && g_pollCounter >= 3) 
-    {
-      outputMouse = true;
-      if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow))
-      { // Quadrant 1 (Upper left)
+    g_pollCounter++;      //Add to the poll counter
+    
+     //delay(20); 
+    
+    //Perform cursor movement actions if joystick has been in active zone for 3 or more poll counts
+    if( g_pollCounter >= 3) {
+      g_pollCounter = 0; // Reset poll counter to zero
+      outputMouse = true; 
+      
+       //Quadrant 1 (Upper left)
+      if ((xHighYHigh >= xHighYLow) && (xHighYHigh >= xLowYHigh) && (xHighYHigh >= xLowYLow)) {    
         xCursor = XHIGH_DIRECTION * cursorModifier(xHigh, g_xHighNeutral, g_xHighMax, xHighComp);
         yCursor = YHIGH_DIRECTION * cursorModifier(yHigh, g_yHighNeutral, g_yHighMax, yHighComp);
-      }
-      else if ((xHighYLow > xHighYHigh) && (xHighYLow > xLowYLow) && (xHighYLow > xLowYHigh))
-      { // Quadrant 4 (Lower Left)
+      } 
+      //Quadrant 4 (Lower Left)
+      else if ((xHighYLow > xHighYHigh) && (xHighYLow > xLowYLow) && (xHighYLow > xLowYHigh)) {   
         xCursor = XHIGH_DIRECTION * cursorModifier(xHigh, g_xHighNeutral, g_xHighMax, xHighComp);
         yCursor = YLOW_DIRECTION *  cursorModifier(yLow,  g_yLowNeutral,  g_yLowMax,  yLowComp);
+                 
       }
-      else if ((xLowYLow >= xHighYHigh) && (xLowYLow >= xHighYLow) && (xLowYLow >= xLowYHigh))
-      { //Quadrant 3 (Lower Right)
+      //Quadrant 3 (Lower Right)
+      else if ((xLowYLow >= xHighYHigh) && (xLowYLow >= xHighYLow) && (xLowYLow >= xLowYHigh)) {  
         xCursor = XLOW_DIRECTION * cursorModifier(xLow, g_xLowNeutral, g_xLowMax, xLowComp);
         yCursor = YLOW_DIRECTION * cursorModifier(yLow, g_yLowNeutral, g_yLowMax, yLowComp);
-      }
-      else if ((xLowYHigh > xHighYHigh) && (xLowYHigh >= xHighYLow) && (xLowYHigh >= xLowYLow))
-      { //Quadrant 2 (Upper Right)
+        
+      } 
+      //Quadrant 2 (Upper Right)
+      else if ((xLowYHigh > xHighYHigh) && (xLowYHigh >= xHighYLow) && (xLowYHigh >= xLowYLow)) { 
         xCursor = XLOW_DIRECTION *  cursorModifier( xLow,  g_xLowNeutral,  g_xLowMax,  xLowComp);
         yCursor = YHIGH_DIRECTION * cursorModifier( yHigh, g_yHighNeutral, g_yHighMax, yHighComp);
+               
       }
-    } // End check skipchange
-  } //End check deadband
+        
+    } //end check skipchange and poll counter   
+  } //end check deadband 
   return outputMouse;
 }
 
@@ -2133,6 +2139,11 @@ void getCursorCalibration(bool responseEnable, bool apiEnabled)
   EEPROM.get(EEPROM_xLowMax,  g_xLowMax);
   EEPROM.get(EEPROM_yHighMax, g_yHighMax);
   EEPROM.get(EEPROM_yLowMax,  g_yLowMax);
+
+  g_xHighYHighRadius = CURSOR_DEADBAND*CURSOR_DEADBAND;
+  g_xHighYLowRadius  = CURSOR_DEADBAND*CURSOR_DEADBAND;
+  g_xLowYLowRadius   = CURSOR_DEADBAND*CURSOR_DEADBAND;
+  g_xLowYHighRadius  = CURSOR_DEADBAND*CURSOR_DEADBAND;
 
   int maxValue[] = { g_xHighMax, g_xLowMax, g_yHighMax, g_yLowMax };
 
