@@ -440,7 +440,7 @@ void initializePins(void)
   pinMode(Y_DIR_LOW_PIN, INPUT);                  // Define Force sensor pins as input ( Down FSR )
   pinMode(BUTTON_UP_PIN, INPUT_PULLUP);           // Set increase cursor speed button pin as input
   pinMode(BUTTON_DOWN_PIN, INPUT_PULLUP);         // Set decrease cursor speed button pin as input
-  pinMode(MODE_SELECT_PIN, INPUT_PULLUP);         // Set the wireless config pin as input
+  pinMode(MODE_SELECT_PIN, INPUT_PULLUP);         // Set the mode pin as input (USB mode = 0; jumper on , Bluetooth mode; jumper off)
 
   // Set unused pins as inputs with pullups
   for (byte pinIndex = 0; pinIndex < sizeof(UNUSED_PINS); pinIndex++)
