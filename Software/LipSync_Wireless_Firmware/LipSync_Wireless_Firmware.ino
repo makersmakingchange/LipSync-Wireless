@@ -42,7 +42,7 @@
 
 //TITLE: LipSync_Wireless_Firmware
 //AUTHOR: MakersMakingChange
-//VERSION: 3.0-beta (27 May 2022)
+//VERSION: 3.0 (1 June 2022)
 //Copyright Neil Squire Society 2016-2022.
 //LICENSE: This work is licensed under the CC BY SA 4.0 License: http://creativecommons.org/licenses/by-sa/4.0 .
 
@@ -230,8 +230,6 @@ _functionList getButtonMappingFunction =        {"MP,0", 0, &getButtonMapping};
 _functionList setButtonMappingFunction =        {"MP,1", 2, &setButtonMapping}; // 2 denotes an array parameter
 _functionList getScrollLevelFunction =          {"SL,0", 0, &getScrollLevel};
 _functionList setScrollLevelFunction =          {"SL,1", 1, &setScrollLevel};
-//_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
-//_functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
 _functionList getBluetoothConfigFunction =      {"BT,0", 0, &getBluetoothConfig};
 _functionList setBluetoothConfigFunction =      {"BT,1", 1, &setBluetoothConfig};
 _functionList factoryResetFunction =            {"FR,1", 1,  &factoryReset};
@@ -263,8 +261,6 @@ _functionList apiFunction[27] =
   setButtonMappingFunction,
   getScrollLevelFunction,
   setScrollLevelFunction,
-  //getCommunicationModeFunction,
-  //setCommunicationModeFunction,
   getBluetoothConfigFunction,
   setBluetoothConfigFunction,
   factoryResetFunction
@@ -387,7 +383,7 @@ void setup()
   ledBlink(4, 250, 3);                                     // End initialization visual feedback
 
   forceCursorDisplay();                                    // Display cursor on screen by moving it
-  
+
 }
 
 
@@ -483,14 +479,12 @@ void cursorHandler(void)
   { // Normal Mouse output ( USB or Wireless )
     (g_commMode==0) ? moveCursor(xCursor, yCursor, 0) : moveBluetoothCursor(g_cursorClickStatus, xCursor, yCursor, 0); // Output mouse command
     delay(CURSOR_DELAY);
-    g_pollCounter = 0; // Reset cursor poll counter
   }
   else if (outputMouse && scrollModeEnabled)
   { // Scroll mode ( USB or Wireless )
     int yScroll = scrollModifier(yCursor, g_cursorMaxSpeed, g_cursorScrollLevel);
     (g_commMode==0) ? moveCursor(0, 0, yScroll) : moveBluetoothCursor(g_cursorClickStatus, 0, 0, yScroll);
     delay(g_cursorScrollDelay);
-    g_pollCounter = 0; // Reset cursor poll counter
   }
 
   //Debug information
@@ -764,6 +758,7 @@ void moveBluetoothCursor(const int buttonCursor,const int xCursor,const int yCur
 
   Serial1.write(bluetoothPacket, 7);
   Serial1.flush();
+
 
   delay(BT_POLL_DELAY);
 }
@@ -1339,10 +1334,9 @@ void decreaseCursorSpeed(bool responseEnabled, bool apiEnabled)
 // Return     : int : The pressure sensor value in ADC steps
 //*********************************//
 // This function returns a single pressure sensor value in volts
-int readPressure(void)
+float readPressure(void)
 {
-  // Measure pressure transducer analog value [0.0V - 5.0V]
-  return (((float)analogRead(PRESSURE_PIN)) / 1023.0) * 5.0; 
+  return analogRead(PRESSURE_PIN);
 }
 
 
@@ -3305,7 +3299,7 @@ void sipAndPuffHandler(const int mode)
   // Puff handling: check if the pressure is under puff pressure threshold and measure how long until it is released
   if (g_cursorPressure < g_puffThreshold)
   { //Puff detected
-
+    
     while (g_cursorPressure < g_puffThreshold) // Continue measuring pressure until puff stops
     {
       g_cursorPressure = readPressure();
@@ -3540,8 +3534,10 @@ void cursorLeftClick(int mode)
     }
   }
   else {
-    g_cursorClickStatus = 1;                   //Click status 1 is used for left click action 
-    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    if(g_cursorClickStatus == 0){
+      g_cursorClickStatus = 1;                   //Click status 1 is used for left click action 
+      moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    }
     g_cursorClickStatus = 0;
     clearBluetoothCursor();
   }
@@ -3571,8 +3567,10 @@ void cursorMiddleClick(int mode)
     }
   }
   else {
-    g_cursorClickStatus = 5;                     //Click status 2 is used for right click action 
-    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    if(g_cursorClickStatus == 0){
+      g_cursorClickStatus = 5;                     //Click status 5 is used for middle click action 
+      moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    }
     g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
     clearBluetoothCursor();   
   }
@@ -3602,8 +3600,10 @@ void cursorRightClick(int mode)
     }
   }
   else {
-    g_cursorClickStatus = 2;                     //Click status 2 is used for right click action 
-    moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);
+    if(g_cursorClickStatus == 0){
+      g_cursorClickStatus = 2;                     //Click status 2 is used for right click action 
+      moveBluetoothCursor(g_cursorClickStatus, 0, 0, 0);      
+    }
     g_cursorClickStatus = 0;                     //Click status 0 is used for release both left and right click actions 
     clearBluetoothCursor(); 
   }
