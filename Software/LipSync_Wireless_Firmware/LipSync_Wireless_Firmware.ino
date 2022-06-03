@@ -42,7 +42,7 @@
 
 //TITLE: LipSync_Wireless_Firmware
 //AUTHOR: MakersMakingChange
-//VERSION: 3.0 (1 June 2022)
+//VERSION: 3.0 (3 June 2022)
 //Copyright Neil Squire Society 2016-2022.
 //LICENSE: This work is licensed under the CC BY SA 4.0 License: http://creativecommons.org/licenses/by-sa/4.0 .
 
@@ -230,12 +230,14 @@ _functionList getButtonMappingFunction =        {"MP,0", 0, &getButtonMapping};
 _functionList setButtonMappingFunction =        {"MP,1", 2, &setButtonMapping}; // 2 denotes an array parameter
 _functionList getScrollLevelFunction =          {"SL,0", 0, &getScrollLevel};
 _functionList setScrollLevelFunction =          {"SL,1", 1, &setScrollLevel};
+_functionList getCommunicationModeFunction =    {"CM,0", 0, &getCommunicationMode};
+_functionList setCommunicationModeFunction =    {"CM,1", 1, &setCommunicationMode};
 _functionList getBluetoothConfigFunction =      {"BT,0", 0, &getBluetoothConfig};
 _functionList setBluetoothConfigFunction =      {"BT,1", 1, &setBluetoothConfig};
 _functionList factoryResetFunction =            {"FR,1", 1,  &factoryReset};
 
 // Declare array of API functions
-_functionList apiFunction[27] =
+_functionList apiFunction[29] =
 {
   getModelNumberFunction,
   getVersionNumberFunction,
@@ -261,6 +263,8 @@ _functionList apiFunction[27] =
   setButtonMappingFunction,
   getScrollLevelFunction,
   setScrollLevelFunction,
+  getCommunicationModeFunction,
+  setCommunicationModeFunction,
   getBluetoothConfigFunction,
   setBluetoothConfigFunction,
   factoryResetFunction
@@ -310,7 +314,7 @@ int g_xHighNeutral, g_xLowNeutral, g_yHighNeutral, g_yLowNeutral; //Individual n
 
 int g_xHighMax, g_xLowMax, g_yHighMax, g_yLowMax;         //Max FSR values which are set to the values from EEPROM
 
-float g_xHighYHighRadius, g_xHighYLowRadius, g_xLowYLowRadius, g_xLowYHighRadius; // Squared deadband distance from center
+const float g_deadband_squared = CURSOR_DEADBAND * CURSOR_DEADBAND; // Squared deadband distance from center
 
 int g_changeTolerance;                                 // The tolerance of changes in FSRs readings
 
@@ -383,7 +387,6 @@ void setup()
   ledBlink(4, 250, 3);                                     // End initialization visual feedback
 
   forceCursorDisplay();                                    // Display cursor on screen by moving it
-
 }
 
 
@@ -408,7 +411,7 @@ void loop()
 
   sipAndPuffHandler(g_commMode);                         // Pressure sensor sip and puff functions
   delay(5);
-  pushButtonHandler(BUTTON_UP_PIN,BUTTON_DOWN_PIN);      // Check rear push buttons
+  pushButtonHandler();      							 // Check rear push buttons
 
 }
 
@@ -548,10 +551,10 @@ bool readJoystick(int &xCursor, int &yCursor, int &xHigh, int &xLow, int &yHigh,
                    + sq(((yLow  - g_yLowNeutral)  > 0) ? float((yLow  - g_yLowNeutral))  : 0);    
 
 // Test if radial position is outside circular deadband
- bool outsideDeadzone = (xHighYHigh > g_xHighYHighRadius) 
-                     || (xHighYLow  > g_xHighYLowRadius)
-                     || (xLowYLow   > g_xLowYLowRadius)
-                     || (xLowYHigh  > g_xLowYHighRadius);
+ bool outsideDeadzone = (xHighYHigh > g_deadband_squared) 
+                     || (xHighYLow  > g_deadband_squared)
+                     || (xLowYLow   > g_deadband_squared)
+                     || (xLowYHigh  > g_deadband_squared);
 
 // If joystick is moved, opposite FSR will decrease in force and therefore decrease in voltate
 // (e.g. joystick unloaded->high resistance-> low voltage)
@@ -909,7 +912,6 @@ int getCommunicationMode(bool responseEnabled, bool apiEnabled) {
 //               optionalArray : int* : The array of int which should contain one element with value of zero.
 //
 // Return     : void
-/*
 void getCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
 {
   if (optionalArray[0] == 0)
@@ -917,7 +919,7 @@ void getCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArr
     getCommunicationMode(responseEnabled, apiEnabled);
   }
 }
-*/
+
 
 //***SET COMMUNICATION MODE STATUS FUNCTION***//
 // Function   : setCommunicationMode
@@ -957,12 +959,11 @@ void setCommunicationMode(bool responseEnabled, bool apiEnabled,int mode)
 //               optionalArray : int* : The array of int which should contain one element with value of zero.
 //
 // Return     : void
-/*
 void setCommunicationMode(bool responseEnabled, bool apiEnabled,int* optionalArray) 
 {
   setCommunicationMode(responseEnabled, apiEnabled,optionalArray[0]);
 }
-*/
+
 
 //***GET BLUETOOTH CONFIGURATION STATUS FUNCTION***//
 // Function   : getBluetoothConfig
@@ -2114,11 +2115,6 @@ void getCursorCalibration(bool responseEnable, bool apiEnabled)
   EEPROM.get(EEPROM_yHighMax, g_yHighMax);
   EEPROM.get(EEPROM_yLowMax,  g_yLowMax);
 
-  g_xHighYHighRadius = CURSOR_DEADBAND*CURSOR_DEADBAND;
-  g_xHighYLowRadius  = CURSOR_DEADBAND*CURSOR_DEADBAND;
-  g_xLowYLowRadius   = CURSOR_DEADBAND*CURSOR_DEADBAND;
-  g_xLowYHighRadius  = CURSOR_DEADBAND*CURSOR_DEADBAND;
-
   int maxValue[] = { g_xHighMax, g_xLowMax, g_yHighMax, g_yLowMax };
 
   printResponseMultiple(responseEnable,
@@ -2443,7 +2439,7 @@ void setButtonMapping(bool responseEnabled, bool apiEnabled, int inputButtonMapp
   bool isValidMapping = true;
   for (byte i = 0; i < INPUT_ACTION_COUNT; i++)
   { // Check each action for validity
-    if (inputButtonMapping[i] < 0 || inputButtonMapping[i] > 8) // Up to 7 input actions but 6 available
+    if (inputButtonMapping[i] < 0 || inputButtonMapping[i] > 7) // Up to 7 input actions but 6 available
     {
       isValidMapping = false;
       break;
@@ -2465,9 +2461,16 @@ void setButtonMapping(bool responseEnabled, bool apiEnabled, int inputButtonMapp
   }
   
   int responseCode = 0;
+  
   (isValidMapping) ? responseCode = 0 : responseCode = 3;
-  printResponseMultiple(responseEnabled, apiEnabled, isValidMapping,
-                        responseCode, "MP,1", 6, '\0', g_actionButton);
+  printResponseMultiple(responseEnabled, 
+						apiEnabled, 
+						isValidMapping,
+                        responseCode, 
+						"MP,1", 
+						6, 
+						'\0', 
+						g_actionButton);
 }
 
 
@@ -2495,6 +2498,7 @@ int getRotationAngle(bool responseEnabled, bool apiEnabled)
   {
     tempRotationAngle = ROTATION_ANGLE;
   }
+  
   printResponseSingle(responseEnabled, 
 						apiEnabled, 
 						true, 
@@ -2544,12 +2548,15 @@ void getRotationAngle(bool responseEnabled, bool apiEnabled, int* optionalArray)
 void setRotationAngle(bool responseEnabled, bool apiEnabled, int inputRotationAngle)
 {
   bool isValidRotationAngle = true;
-  
-  if(inputRotationAngle >= 0 && inputRotationAngle <=360) {
-    g_rotationAngle = inputRotationAngle;                     //update value to global variable
-    EEPROM.put(EEPROM_rotationAngle, g_rotationAngle); 
-	delay(EEPROM_WRITE_DELAY);
-	
+  if ( inputRotationAngle == 0 
+    || inputRotationAngle == 90
+    || inputRotationAngle == 180
+    || inputRotationAngle == 270)
+  {
+    isValidRotationAngle = true;
+    g_rotationAngle = inputRotationAngle;                     // Update value to global variable
+    EEPROM.put(EEPROM_rotationAngle, g_rotationAngle);        // Update value to memory from serial input
+    delay(EEPROM_WRITE_DELAY);
     if (!API_ENABLED)
     {
       g_rotationAngle = ROTATION_ANGLE; // Use default rotation angle if bad serial input
@@ -2603,15 +2610,57 @@ void setRotationAngle(bool responseEnabled, bool apiEnabled, int* inputRotationA
 //***************************//
 void updateRotationAngle(void)
 { 
+  // Set rotation angle components based on global rotation angle
+  // Currently limited to 4 cadrinal 
+  switch(g_rotationAngle) 
+  {
+    case 90:
+    {
+      g_rotationAngle11 = 0;
+      g_rotationAngle12 = 1;
+      g_rotationAngle21 = 1;
+      g_rotationAngle22 = 0;
+      break;
+    }
+    case 180:
+    {
+      g_rotationAngle11 = -1;
+      g_rotationAngle12 = 0;
+      g_rotationAngle21 = 0;
+      g_rotationAngle22 = -1;
+      break;
+    }
+    case 270:
+    {
+      g_rotationAngle11 = 0;
+      g_rotationAngle12 = -1;
+      g_rotationAngle21 = 1;
+      g_rotationAngle22 = 0;
+      break;
+    }
+    case 0:
+    {
+    }
+    default:
+    {
+      // Default rotation angle
+      g_rotationAngle11 = 1;
+      g_rotationAngle12 = 0;
+      g_rotationAngle21 = 0;
+      g_rotationAngle22 = 1;
+      break;  
+    }
+  } // End switch case
+
+ // More advanced angle calculation - removed to save memory
   //Convert rotation angle from degrees to radians
-  float rotationAngleRad = g_rotationAngle * M_PI / 180.0; 
+  //float rotationAngleRad = g_rotationAngle * M_PI / 180.0;
 
   //calculate transform matrix elements.
-  g_rotationAngle11 = cos(rotationAngleRad);
-  g_rotationAngle12 = sin(rotationAngleRad);
-  g_rotationAngle21 = -g_rotationAngle12; // -sin(rotation_angle_rad)
-  g_rotationAngle22 = g_rotationAngle11; //cos(rotation_angle_rad)
-
+  //g_rotationAngle11 = cos(rotationAngleRad);
+  //g_rotationAngle12 = sin(rotationAngleRad);
+  //g_rotationAngle21 = -g_rotationAngle12; // -sin(rotation_angle_rad)
+  //g_rotationAngle22 = g_rotationAngle11; // cos(rotation_angle_rad)
 }
 
 //***GET SCROLL LEVEL FUNCTION***//
@@ -2831,7 +2880,9 @@ void factoryReset(bool responseEnabled, bool apiEnabled, int* resetType)
 bool serialSettings(bool enabled)
 {
   String commandString = "";
-  bool settingsFlag = enabled;
+  bool settingsFlag = enabled;                    // Settings mode or command mode
+  bool responseSendFlag = false;                  // Send response if true , perform command if false
+  bool responseStatusFlag = false;                // Set status of the response ( SUCCESS = true, FAIL = false )
 
   // Set the input parameter to the flag returned. This will help to detect that the settings actions should be performed.
   if (Serial.available() > 0)
@@ -2842,26 +2893,32 @@ bool serialSettings(bool enabled)
     {
       // SETTING received
       // Set the return flag to true so settings actions can be performed in the next call to the function
-      printResponseSingle(true, true, true, 0, commandString, false, 0);
       settingsFlag = true;
+      responseSendFlag = true;
+      responseStatusFlag = true;
     }
     else if (settingsFlag == true && commandString == "EXIT")
     {
       // EXIT Recieved
       // Set the return flag to false so settings actions can be exited
-      printResponseSingle(true, true, true, 0, commandString, false, 0);
       settingsFlag = false;
+      responseSendFlag = true;
+      responseStatusFlag = true;
     }
     else if (settingsFlag == true && isValidCommandFormat(commandString))
     { // Check if command's format is correct and it's in settings mode
-      performCommand(commandString);                  // Sub function to process valid strings
       settingsFlag = false;
+      responseSendFlag = false;
     }
     else
     {
-      printResponseSingle(true, true, false, 0, commandString, false, 0);
       settingsFlag = false;
+      responseSendFlag = true;
+      responseStatusFlag = false;
     }
+    // Perform action based on the previous conditional statements
+    (responseSendFlag) ? printResponseSingle(true, true, responseStatusFlag, 0, commandString, false, 0) : performCommand(commandString);  
+    
     Serial.flush();
   }
   return settingsFlag;
@@ -2881,8 +2938,9 @@ bool serialSettings(bool enabled)
 
 bool isValidCommandFormat(String inputCommandString)
 {
-  bool isValidFormat = false;;
-  if (inputCommandString.charAt(2) == ',' && inputCommandString.charAt(4) == ':')
+  bool isValidFormat = false;
+  int inputLength = inputCommandString.length();
+  if ((inputLength >= (6) && inputLength <= (11)) && inputCommandString.charAt(2) == ',' && inputCommandString.charAt(4) == ':')
   {
     isValidFormat = true;
   }
@@ -3251,34 +3309,39 @@ void ledBlink(int numBlinks, int delayBlinks, int ledNumber)
 // 
 // Description: This function handles the push button actions.
 // 
-// Parameters :  switchUpPin : int : The state of switch up pin.
-//               switchDownPin : int : The state of switch down pin.
+// Parameters :  void
 // 
 // Return     : void
 //*********************************//
-void pushButtonHandler(int switchUpPin, int switchDownPin) 
+void pushButtonHandler() 
 {
-    //Cursor speed control push button functions below
-  if (digitalRead(switchUpPin) == LOW) 
-  {
+  if (digitalRead(BUTTON_UP_PIN) == LOW)
+  { // Up button pushed
     delay(200);
     clearButtonAction();
     delay(50);
-    if (digitalRead(switchDownPin) == LOW) {
-      setCursorCalibration(true, false);                      //Call joystick calibration if both push button up and down are pressed 
-    } else {
-      increaseCursorSpeed(true, false);                      //Call increase cursor speed function if push button up is pressed 
+    if (digitalRead(BUTTON_DOWN_PIN) == LOW)
+    { // Up and down button pushed
+      setCursorCalibration(true, false);                      // Call joystick calibration if both push button up and down are pressed
+    }
+    else
+    { // Just up button pushed
+      increaseCursorSpeed(true, false);                      // Call increase cursor speed function if push button up is pressed
     }
   }
 
-  if (digitalRead(switchDownPin) == LOW) {
+  if (digitalRead(BUTTON_DOWN_PIN) == LOW)
+  { // Down button pushed
     delay(200);
     clearButtonAction();
     delay(50);
-    if (digitalRead(switchUpPin) == LOW) {
-      setCursorCalibration(true, false);                      //Call joystick calibration if both push button up and down are pressed 
-    } else {
-      decreaseCursorSpeed(true, false);                      //Call increase cursor speed function if push button up is pressed 
+    if (digitalRead(BUTTON_UP_PIN) == LOW)
+    { // Down button and up button pushed
+      setCursorCalibration(true, false);                      // Call joystick calibration if both push button up and down are pressed
+    }
+    else
+    { // Just down button pushed
+      decreaseCursorSpeed(true, false);                      // Call increase cursor speed function if push button up is pressed
     }
   }
 }
@@ -3497,8 +3560,7 @@ void performButtonAction(byte outputAction, bool modeAction)
           delay(5);
           break;
         }
-      
-      case OUTPUT_SECONDARY_SCROLL:
+		/*case OUTPUT_SECONDARY_SCROLL:
         {
           // Scroll: Perform mouse scroll action using mouse middle button
           // Default: if sip counter value is under 750 and more than SIP_COUNT_THRESHOLD_MED ( 3 Second Long Sip )
@@ -3506,6 +3568,7 @@ void performButtonAction(byte outputAction, bool modeAction)
           delay(5);
           break;
         }
+		*/
         
     }// end switch
   }
@@ -3679,6 +3742,7 @@ void cursorScroll(void)
 //
 // Return     : void
 //****************************************//
+/*
 void cursorSecondaryScroll(int mode)
 {
   if (mode == 0) {
@@ -3703,3 +3767,4 @@ void cursorSecondaryScroll(int mode)
     }    
   }
 }
+*/
