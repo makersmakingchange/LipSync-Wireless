@@ -119,7 +119,7 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
   </tr>
   <tr>
     <td>LipSync Wireless Firmware</td>
-    <td>1.0</td>
+    <td>3.0</td>
     <td>INO</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/master/Software/LipSync_Wireless_Firmware/LipSync_Wireless_Firmware.ino">LipSync_Wireless_Firmware.ino</a></td>
   </tr>
