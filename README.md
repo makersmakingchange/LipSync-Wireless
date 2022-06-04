@@ -1,9 +1,17 @@
 ## LipSync Wireless
 
-The LipSync is an assistive technology that enables people with quadriplega or limited hand to use touchscreen mobile devices by manipulating a mouth-operated joystick with integrated sip and puff controls. We are releasing all of our work open-source, to make the Lipsync a solution that can be made at the community level for less than $300.
+<p align="center">
+<img align="center" src="https://raw.githubusercontent.com/makersmakingchange/blog/gh-pages/_resources/images/LipSync_Logo.jpg" width="50%" height="50%" alt="LipSync Logo"/>
+</p>
 
-This GitHub repository will serve as a database for all software files associated with the LipSync Wireless.
+The LipSync is an assistive technology device that allows quadriplegics and other people with limited hand function to use touchscreen mobile devices, tablets, and computers by manipulation of a mouth-operated joystick with integrated sip and puff controls. This is an Open-Source Hardware project, so the Lipsync can be made at the community level for less than $300.
 
+This GitHub repository will serve as a database for all files and documentation associated with the LipSync Wireless project.
+
+## More info at
+
+- [Makers Making Change Project Page](https://makersmakingchange.com/project/lipsyncwireless/)
+- [Makers Making Change Forum Thread](https://makersmakingchange.com/forum/topic/lipsync-wireless/)
 
 ## Compatibility 
 
@@ -38,6 +46,25 @@ This GitHub repository will serve as a database for all software files associate
     <td>Compatible with Mac OS X 10.0 and newer versions (Requires Bluetooth 2.0 reciver)</td>
   </tr>
   </table> 
+  
+## Getting Started
+There are several options for obtaining a LipSync Wireless device.
+1. Build it yourself
+2. Request a volunteer maker to build one for you.
+
+### 1. Build it Yourself
+All the information you need to build a LipSync Wireless is avaiable in this repository. You'll need to order a number of off-the-shelf components, order a set of custom printed circuit boards and 3D print a number of components.
+
+### 2. Volunteer Build
+You can submit a build request through the Makers Making Change Website. A volunteer maker will build a LipSync and the requestor is responsible for the cost of materials and any shipping.
+
+First, you'll need to [sign up](https://www.makersmakingchange.com/sign-up/) to create an account. Once your account is activated, you can log in.
+
+Second, [submit a build request](https://makersmakingchange.com/request-a-build?project_id=3905) for a LipSync.
+
+Once a volunteer maker agrees to take on your request, communicate with them to discuss details and reimbursement.
+
+
 
 ## Download
 
@@ -47,8 +74,15 @@ This GitHub repository will serve as a database for all software files associate
     <th>Version</th>
     <th>Format</th>
     <th>Link</th>
+  </tr>
   <tr>
-    <td>Manual</td>
+    <td>LipSync Wireless All</td>
+    <td>3.0</td>
+    <td>ZIP</td>
+    <td><a href="">LipSync-Wireless-v3.0.zip</a></td>
+  </tr>
+  <tr>
+    <td>LipSync Wireless Assembly Guide</td>
     <td>1.5</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Manual.pdf">LipSync_Manual.pdf</a></td>
@@ -66,7 +100,7 @@ This GitHub repository will serve as a database for all software files associate
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/LipSync_Wireless_User_Guide.pdf">LipSync_Wireless_User_Guide.pdf</a></td>
   </tr>
   <tr>
-     <td>Mounting Document</td>
+     <td>LipSync Wireless Mounting Guide</td>
      <td>1.0</td>
      <td>PDF</td>
      <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Mounting_Document.pdf">Mounting_Document.pdf</a></td>
@@ -154,14 +188,52 @@ This GitHub repository will serve as a database for all software files associate
 </tr>
 </table> 
 
-## Updates 
-For latest updates regarding the project we encourage you to visit our <a href="https://www.makersmakingchange.com/">website</a> and <a href="https://hackaday.io/project/13424-lipsync">Hackaday</a> page.
+## Resources
 
+<table style="width:100%">
+  <tr>
+    <th>Resource</th>
+    <th>Link</th>
+  </tr>
+  <tr>
+    <td>LipSync Firmware and Calibration Video</td>
+    <td><a href="https://www.youtube.com/watch?v=RnpA24WH0Qk">Video</a></td>
+  <tr>
+    <td>LipSync Joystick Calibration Video</td>
+    <td><a href="https://www.youtube.com/watch?v=Daf-54y6SBg">Video</a></td>
+  </tr>
+    <tr>
+    <td>LipSync Build Video</td>
+    <td><a href="https://www.youtube.com/watch?v=lBXpbkp5DW4&list=PLhoPg9bDvBR4CSFRfNbQ87ALnfaHOyM3C">Video</a></td>
+  </tr>
+</table> 
 
-## Contact Us
+## License
+<br>
+<p align="center">
+<a href="https://www.oshwa.org">
+	<img align="center" src="http://www.oshwa.org/wp-content/uploads/2014/03/oshw-logo-200-px.png" alt="Open Source Hardware Logo"/></a>
+</p>
 
-For technical questions, to get involved, or share your LipSync experience we encourage you to visit [LipSync Wireless project page](https://www.makersmakingchange.com/project/lipsyncwireless/) or contact info@makersmakingchange.com
+<p align="center">
+This is an open source hardware project and adheres to the Open Source Hardware (OSHW) Statement of Principle 1.0 and Open Source Hardware (OSHW) Definition 1.0 found at <a href="http://www.oshwa.org">www.oshwa.org</a>
+</p>
 
+## About Makers Making Change
+<img src="https://www.makersmakingchange.com/wp-content/uploads/logo/mmc_logo.svg" width="500" alt="Makers Making Change Logo">
 
+Makers Making Change is an initiative of [Neil Squire](https://www.neilsquire.ca/), a Canadian non-profit that helps people with disabilities.
 
+We are committed to creating a network of volunteer makers who support people with disabilities in their communities through building cost-effective assistive devices. Check out our library of free, open-source assistive technologies with parts and build instructions.
 
+ - [www.MakersMakingChange.com](https://www.makersmakingchange.com/)
+ - [GitHub](https://github.com/makersmakingchange)
+ - [Thingiverse](https://www.thingiverse.com/makersmakingchange/about)
+ - Twitter: [@makermakechange](https://twitter.com/makermakechange)
+ - Instagram: [@makersmakingchange](https://www.instagram.com/makersmakingchange)
+
+### Contact Us
+
+For technical questions, to get involved, or share your experience we encourage you to visit the [MMC Device Page](https://www.makersmakingchange.com/project/LipSync), [MMC Forum](https://forum.makersmakingchange.com), or contact info@makersmakingchange.com
+
+<hr>
