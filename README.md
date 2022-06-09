@@ -127,64 +127,64 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
     <td>Interface Board Layout</td>
     <td>2.71</td>
     <td>BRD</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.brd">LipSync_Interface_Board.brd</a></td>
+    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.brd">LipSync_Interface_Board.brd</a></td>
   </tr>
   <tr>
     <td>Interface Board Schematic</td>
     <td>2.71</td>
     <td>SCH</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
+    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
   </tr>
   <tr>
     <td>JLCPCB LipSync Interface Board Gerber</td>
     <td>2.71</td>
     <td>ZIP</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/JLCPCB_LipSync_Interface_Board.zip">JLCPCB_LipSync_Interface_Board.zip</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/JLCPCB_LipSync_Interface_Board.zip">JLCPCB_LipSync_Interface_Board.zip</a></td>
   </tr>
   <tr>
     <td>OSHPark LipSync Interface Board Gerber</td>
     <td>2.71</td>
     <td>ZIP</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/OSHPark_LipSync_Interface_Board.zip">OSHPark_LipSync_Interface_Board.zip</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/OSHPark_LipSync_Interface_Board.zip">OSHPark_LipSync_Interface_Board.zip</a></td>
   </tr>
   <tr>
     <td>PCBWay LipSync Interface Board Gerber</td>
     <td>2.71</td>
     <td>ZIP</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/PCBWay_LipSync_Interface_Board.zip">PCBWay_LipSync_Interface_Board.zip</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/PCBWay_LipSync_Interface_Board.zip">PCBWay_LipSync_Interface_Board.zip</a></td>
   </tr>
   <tr>
     <td>Seeed Fusion LipSync Interface Board Gerber</td>
     <td>2.71</td>
     <td>ZIP</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/Seeed_Fusion_LipSync_Interface_Board.zip">Seeed_Fusion_LipSync_Interface_Board.zip</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/PCB_design/Gerber/LipSync_Interface_Board/Seeed_Fusion_LipSync_Interface_Board.zip">Seeed_Fusion_LipSync_Interface_Board.zip</a></td>
   </tr>	
   <tr>
     <td rowspan="9">Housing_design</td>
     <td rowspan="9">2.2d</td>
     <td rowspan="9">STL</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Button.STL">LipSync_Button.STL</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Button.stl">LipSync_Button.STL</a></td>
   </tr>
   <tr>
-  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Front_Housing.STL">LipSync_Front_Housing.STL</a></td>
+  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Front_Housing.STL">LipSync_Front_Housing.STL</a></td>
   </tr>
   <tr>
-	<td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Joystick_Base.STL">LipSync_Joystick_Base.STL</a></td>
+	<td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Joystick_Base.STL">LipSync_Joystick_Base.STL</a></td>
 </tr>
 <tr>
-  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Joystick_Front.STL">LipSync_Joystick_Front.STL</a></td>
+  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Joystick_Front.STL">LipSync_Joystick_Front.STL</a></td>
 </tr>
 <tr>
-  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Joystick_Rocker.STL">LipSync_Joystick_Rocker.STL</a></td>
+  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Joystick_Rocker.STL">LipSync_Joystick_Rocker.STL</a></td>
 </tr>
 <tr>
-    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Joystick_Stand.STL">LipSync_Joystick_Stand.STL</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/Optional/LipSync_Joystick_Jig.STL">LipSync_Joystick_Jig.STL</a></td>
 </tr>
 <tr>
-  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/raw/develop/Hardware/Housing_design/LipSync_Rear_Housing.stl">LipSync_Rear_Housing.STL</a></td>
+  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/LipSync_Rear_Housing.STL">LipSync_Rear_Housing.STL</a></td>
 </tr>
 <tr>
-  <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/Print_Settings.txt">Print_Settings.txt</a></td>
+  <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/Housing_design/3D_Print_Settings.txt">Print_Settings.txt</a></td>
 </tr>
 </table> 
 
