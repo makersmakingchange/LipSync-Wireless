@@ -115,7 +115,7 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
     <td>LipSync Wireless BOM (CSV)</td>
     <td>September 16, 2019</td>
     <td>CSV</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/develop/Documentation/LipSync_Wireless_BOM.csv" download target="_blank">LipSync_Wireless_BOM.csv</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Documentation/LipSync_Wireless_BOM.csv" download target="_blank">LipSync_Wireless_BOM.csv</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless Firmware</td>
@@ -133,7 +133,7 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
     <td>Interface Board Schematic</td>
     <td>2.71</td>
     <td>SCH</td>
-    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
   </tr>
   <tr>
     <td>JLCPCB LipSync Interface Board Gerber</td>
