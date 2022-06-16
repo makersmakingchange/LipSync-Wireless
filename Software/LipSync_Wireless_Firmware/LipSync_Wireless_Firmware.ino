@@ -59,7 +59,7 @@
 #define OUTPUT_MIDDLE_CLICK       (int)5             // Generates a short middle click
 #define OUTPUT_CURSOR_HOME_RESET  (int)6             // Initiates the cursor home reset routine to reset center position. 
 #define OUTPUT_CURSOR_CALIBRATION (int)7             // Initiates the cursor calibration to calibrate joystick range and reset center position.
-#define OUTPUT_SECONDARY_SCROLL   (int)8             // Initiates secondary scroll mode. This action is performed by press and holding mouse middle button.
+//#define OUTPUT_SECONDARY_SCROLL   (int)8             // Initiates secondary scroll mode. This action is performed by press and holding mouse middle button.
 
 //***OUTPUT MAPPING***// - CUSTOMIZABLE
 //These values can be changed to remap different output actions to different input actions
@@ -2829,6 +2829,7 @@ void factoryReset(bool responseEnabled, bool apiEnabled, int resetType)
     g_cursorMaxSpeed =  cursorParams[g_cursorSpeedCounter];
     g_cursorScrollLevel = SCROLL_LEVEL;                                     // Set the default scroll speed values
     g_cursorScrollDelay = calculateScrollDelay(g_cursorScrollLevel);
+    g_changeTolerance = CHANGE_DEFAULT_TOLERANCE;
     g_debugModeEnabled = DEBUG_MODE;                                        // Set the default debug mode
     getCompFactor();                                                        // Update the compensation factors
     ledBlink(2, 250, 1);
