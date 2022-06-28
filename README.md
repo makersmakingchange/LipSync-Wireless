@@ -83,19 +83,19 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
   </tr>
   <tr>
     <td>LipSync Wireless Assembly Guide</td>
-    <td>1.5</td>
+    <td>1.6</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Documentation/LipSync_Assembly_Guide.pdf">LipSync_Assembly_Guide.pdf</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless Startup Guide</td>
-    <td>1.1</td>
+    <td>1.3</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Documentation/LipSync_Wireless_Startup_Guide.pdf">LipSync_Wireless_Startup_Guide.pdf</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless User Guide</td>
-    <td>1.1</td>
+    <td>1.3</td>
     <td>PDF</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Documentation/LipSync_Wireless_User_Guide.pdf">LipSync_Wireless_User_Guide.pdf</a></td>
   </tr>
@@ -107,13 +107,13 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
   </tr>
   <tr>
     <td>LipSync Wireless BOM (XLSX)</td>
-    <td>September 16, 2019</td>
+    <td>September 1, 2021</td>
     <td>XLSX</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Documentation/LipSync_Wireless_BOM.xlsx">LipSync_Wireless_BOM.xlsx</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless BOM (CSV)</td>
-    <td>September 16, 2019</td>
+    <td>September 1, 2021</td>
     <td>CSV</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Documentation/LipSync_Wireless_BOM.csv" download target="_blank">LipSync_Wireless_BOM.csv</a></td>
   </tr>
@@ -161,7 +161,7 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
   </tr>	
   <tr>
     <td rowspan="9">Housing_design</td>
-    <td rowspan="9">2.2d</td>
+    <td rowspan="9">3.0</td>
     <td rowspan="9">STL</td>
     <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Hardware/Housing_design/LipSync_Button.stl">LipSync_Button.STL</a></td>
   </tr>
