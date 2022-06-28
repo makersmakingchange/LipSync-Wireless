@@ -85,13 +85,13 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
     <td>LipSync Wireless Assembly Guide</td>
     <td>1.6</td>
     <td>PDF</td>
-    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Documentation/LipSync_Assembly_Guide.pdf">LipSync_Assembly_Guide.pdf</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Documentation/LipSync_Assembly_Guide.pdf">LipSync_Assembly_Guide.pdf</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless Startup Guide</td>
     <td>1.3</td>
     <td>PDF</td>
-    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/develop/Documentation/LipSync_Wireless_Startup_Guide.pdf">LipSync_Wireless_Startup_Guide.pdf</a></td>
+    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Documentation/LipSync_Wireless_Startup_Guide.pdf">LipSync_Wireless_Startup_Guide.pdf</a></td>
   </tr>
   <tr>
     <td>LipSync Wireless User Guide</td>
