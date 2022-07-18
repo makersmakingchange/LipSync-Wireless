@@ -133,7 +133,7 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
     <td>Interface Board Schematic</td>
     <td>2.71</td>
     <td>SCH</td>
-    <td><a href="https://github.com/makersmakingchange/LipSync-Wireless/blob/master/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
+    <td><a href="https://raw.githubusercontent.com/makersmakingchange/LipSync-Wireless/master/Hardware/PCB_design/Eagle/LipSync_Interface_Board/LipSync_Interface_Board.sch">LipSync_Interface_Board.sch</a></td>
   </tr>
   <tr>
     <td>JLCPCB LipSync Interface Board Gerber</td>
