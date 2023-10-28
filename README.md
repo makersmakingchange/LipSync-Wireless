@@ -8,10 +8,11 @@ The LipSync is an assistive technology device that allows quadriplegics and othe
 
 This GitHub repository will serve as a database for all files and documentation associated with the LipSync Wireless project.
 
+WARNING - Unfortunately, as of 2021-Jul-21, the Bluetooth Module has been retired and is no longer for sale [Sparkfun Bluetooth Mate Silver](https://www.sparkfun.com/products/retired/12576). There is no suitable replacement component at this time. An updated design based on new hardware is under development ([LipSync X](https://github.com/makersmakingchange/LipSyncX)) but is not ready for release yet.
+
 ## More info at
 
-- [Makers Making Change Project Page](https://makersmakingchange.com/project/lipsyncwireless/)
-- [Makers Making Change Forum Thread](https://makersmakingchange.com/forum/topic/lipsync-wireless/)
+- [Makers Making Change Project Page](https://www.makersmakingchange.com/s/product/lipsync-wireless/01tJR0000006940YAA)
 
 ## Compatibility 
 
@@ -219,21 +220,24 @@ Once a volunteer maker agrees to take on your request, communicate with them to 
 This is an open source hardware project and adheres to the Open Source Hardware (OSHW) Statement of Principle 1.0 and Open Source Hardware (OSHW) Definition 1.0 found at <a href="http://www.oshwa.org">www.oshwa.org</a>
 </p>
 
+--
+
 ## About Makers Making Change
-<img src="https://www.makersmakingchange.com/wp-content/uploads/logo/mmc_logo.svg" width="500" alt="Makers Making Change Logo">
+[<img src="https://raw.githubusercontent.com/makersmakingchange/makersmakingchange/main/img/mmc_logo.svg" width="500" alt="Makers Making Change Logo">](https://www.makersmakingchange.com/)
 
-Makers Making Change is an initiative of [Neil Squire](https://www.neilsquire.ca/), a Canadian non-profit that helps people with disabilities.
+Makers Making Change is a program of [Neil Squire](https://www.neilsquire.ca/), a Canadian non-profit that uses technology, knowledge, and passion to empower people with disabilities.
 
-We are committed to creating a network of volunteer makers who support people with disabilities in their communities through building cost-effective assistive devices. Check out our library of free, open-source assistive technologies with parts and build instructions.
+Makers Making Change leverages the capacity of community based Makers, Disability Professionals and Volunteers to develop and deliver affordable Open Source Assistive Technologies.
 
- - [www.MakersMakingChange.com](https://www.makersmakingchange.com/)
- - [GitHub](https://github.com/makersmakingchange)
- - [Thingiverse](https://www.thingiverse.com/makersmakingchange/about)
+ - Website: [www.MakersMakingChange.com](https://www.makersmakingchange.com/)
+ - GitHub: [makersmakingchange](https://github.com/makersmakingchange)
  - Twitter: [@makermakechange](https://twitter.com/makermakechange)
  - Instagram: [@makersmakingchange](https://www.instagram.com/makersmakingchange)
+ - Facebook: [makersmakechange](https://www.facebook.com/makersmakechange)
+ - LinkedIn: [Neil Squire Society](https://www.linkedin.com/company/neil-squire-society/)
+ - Thingiverse: [makersmakingchange](https://www.thingiverse.com/makersmakingchange/about)
+ - Printables: [MakersMakingChange](https://www.printables.com/@MakersMakingChange)
 
 ### Contact Us
+For technical questions, to get involved, or to share your experience we encourage you to [visit our website](https://www.makersmakingchange.com/) or [contact us](https://www.makersmakingchange.com/s/contact).
 
-For technical questions, to get involved, or share your experience we encourage you to visit the [MMC Device Page](https://makersmakingchange.com/assistive-devices/), [MMC Forum](https://makersmakingchange.com/forum/), or contact info@makersmakingchange.com
-
-<hr>
