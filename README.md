@@ -1,4 +1,5 @@
 ## LipSync Wireless
+**As of 2024-Feb-08, this version of the LipSync is now obsolete and has been replaced by the [LipSync 4](https://github.com/makersmakingchange/LipSync).**
 
 <p align="center">
 <img align="center" src="https://raw.githubusercontent.com/makersmakingchange/blog/gh-pages/_resources/images/LipSync_Logo.jpg" width="50%" height="50%" alt="LipSync Logo"/>
@@ -9,10 +10,6 @@ The LipSync is an assistive technology device that allows quadriplegics and othe
 This GitHub repository will serve as a database for all files and documentation associated with the LipSync Wireless project.
 
 WARNING - Unfortunately, as of 2021-Jul-21, the Bluetooth Module has been retired and is no longer for sale [Sparkfun Bluetooth Mate Silver](https://www.sparkfun.com/products/retired/12576). There is no suitable replacement component at this time. An updated design based on new hardware is under development ([LipSync X](https://github.com/makersmakingchange/LipSyncX)) but is not ready for release yet.
-
-## More info at
-
-- [Makers Making Change Project Page](https://www.makersmakingchange.com/s/product/lipsync-wireless/01tJR0000006940YAA)
 
 ## Compatibility 
 
